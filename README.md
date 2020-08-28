@@ -10,7 +10,8 @@ All functions are located in the script [PROMICE_lib.py](PROMICE_lib.py) and an 
 
 1. [Pressure transducer processing](#pressure-transducer-processing)
 2. [Snow height processing](#snow-height-processing)
-3. [Surface height processing: combining pressure transducer and sonic rangers](#start)
+3. [Combining ice and snow height](#combining-ice-and-snow-height)
+4. [Output PROMICE_L2 file](#Output-PROMICE_L2-file)
 
 # Pressure transducer processing
 ![ptd_proc_KAN_L](doc/fig1.JPG)
@@ -137,7 +138,7 @@ Here at UPE_U, on instrument 1 (SR50 on weather station, 2 is for stake assembly
 ```
 
 # Combining ice and snow height
-![hs_proc_KPC_U](doc/fig3.jpg)
+![hs_proc_KPC_U](doc/fig3.JPG)
 
 The pressure transducer tracks the ice surface, the sonic ranger ranger on the station tracks the snow height is bounded to 0 when the AWS is lying on bare ice and the sonic ranger on the stake assembly can track both snow and ice surface through time, but suffers from the movement/bending of the stake assembly. We here combine the three dataset to recreate the snow and ice surface.
 
@@ -151,7 +152,7 @@ The [combine_hs_dpt](https://github.com/BaptisteVandecrux/PROMICE-AWS-toolbox/bl
 
 ## Running
 
-To combine the pressure transducer and snow height data, you need to process these two variables first, and the use (combine_hs_dpt)[https://github.com/BaptisteVandecrux/PROMICE-AWS-toolbox/blob/d98ce0fb3c2ed2a9000d7986299a7306c89e83e2/PROMICE_lib.py#L482]:
+To combine the pressure transducer and snow height data, you need to process these two variables first, and the use [combine_hs_dpt](https://github.com/BaptisteVandecrux/PROMICE-AWS-toolbox/blob/d98ce0fb3c2ed2a9000d7986299a7306c89e83e2/PROMICE_lib.py#L482):
 
 ```python
 	import PROMICE_lib as pl
@@ -171,7 +172,7 @@ To combine the pressure transducer and snow height data, you need to process the
 
 ## Output
 
-(combine_hs_dpt)[https://github.com/BaptisteVandecrux/PROMICE-AWS-toolbox/blob/d98ce0fb3c2ed2a9000d7986299a7306c89e83e2/PROMICE_lib.py#L482] gives as output a panda dataframe containing all the columns from the original PROMICE files plus the following columns:
+[combine_hs_dpt](https://github.com/BaptisteVandecrux/PROMICE-AWS-toolbox/blob/d98ce0fb3c2ed2a9000d7986299a7306c89e83e2/PROMICE_lib.py#L482) gives as output a panda dataframe containing all the columns from the original PROMICE files plus the following columns:
 
 **DepthPressureTransducer_Cor_adj(m)** that contains the adjusted, filtered and year-to-year continuous pressure transducer data.
 
@@ -189,7 +190,28 @@ To combine the pressure transducer and snow height data, you need to process the
 4 = interpolated
 ```
 
+# Output PROMICE_L2 file
 
+This is easily done outputing the pandas dataframe to tab-delimited text file:
 
+```python
+    import PROMICE_lib as pl
+    path_to_PROMICE='path_to_PROMICE'
+    site = 'QAS_U'
+    df, site =pl.load_data(file=path_to_PROMICE+site+'_hour_v03.txt', year='all')
+    
+    # processing pressure transducer
+    df = pl.dpt_proc(df, year='all', site =site, visualisation=True)
+    
+    if len(df) > 0:    
+        # processing snow height
+        df = pl.hs_proc(df,site, visualisation=True)
+         # combining pressure transducer and surface height to reconstruct the surface heigh
+        df = pl.combine_hs_dpt(df, site)
+        
+        # saving to file
+        if len(df)>0:
+            df.fillna(-999).to_csv(site+'_hour_v03_L2.txt', sep="\t")
+```
 
 
