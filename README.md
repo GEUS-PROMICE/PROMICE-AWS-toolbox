@@ -46,7 +46,7 @@ Here at UPE_U, in 2019, the pressure transducer data between day of the year 250
 ## Running the pressure transducer processing
 
 ```python
-	import PROMICE_lib as pl
+    import PROMICE_lib as pl
     path_to_PROMICE='path_to_PROMICE'
     site = 'KAN_L'
     df, site =pl.load_data(file=path_to_PROMICE+site+'_hour_v03.txt', year='all')
@@ -105,7 +105,7 @@ Here at UPE_U, on instrument 1 (SR50 on weather station, 2 is for stake assembly
 ## Running
 
 ```python
-	import PROMICE_lib as pl
+    import PROMICE_lib as pl
     path_to_PROMICE='path_to_PROMICE'
     site = 'KPC_U'
     df, site =pl.load_data(file=path_to_PROMICE+site+'_hour_v03.txt', year='all')
@@ -155,7 +155,7 @@ The [combine_hs_dpt](https://github.com/BaptisteVandecrux/PROMICE-AWS-toolbox/bl
 To combine the pressure transducer and snow height data, you need to process these two variables first, and the use [combine_hs_dpt](https://github.com/BaptisteVandecrux/PROMICE-AWS-toolbox/blob/d98ce0fb3c2ed2a9000d7986299a7306c89e83e2/PROMICE_lib.py#L482):
 
 ```python
-	import PROMICE_lib as pl
+    import PROMICE_lib as pl
     path_to_PROMICE='path_to_PROMICE'
     site = 'QAS_U'
     df, site =pl.load_data(file=path_to_PROMICE+site+'_hour_v03.txt', year='all')
