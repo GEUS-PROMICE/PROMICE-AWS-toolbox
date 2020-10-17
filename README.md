@@ -76,7 +76,7 @@ Processing, filtering and exclusion of the snow height time series acquired at P
 
 The [hs_proc](https://github.com/BaptisteVandecrux/PROMICE-AWS-toolbox/blob/d98ce0fb3c2ed2a9000d7986299a7306c89e83e2/PROMICE_lib.py#L394) function allows to:
 
-## 1. Adjust pressure transducer on specific days
+## 1. Adjust snow height on specific days
 This is done with the file [hs_adj.csv](metadata/hs_adj.csv) which has a simple structure:
 ```
 site, instr, year, adjust_start, adjust_val
