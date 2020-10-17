@@ -166,7 +166,7 @@ def hs_proc(df, site, visualisation=True):
 
     z1 = df["SurfaceHeight1(m)"].copy()
     z2 = df["SurfaceHeight2(m)"].copy()
-    # adjusting pressure transducer depth
+    
     df2 = pd.DataFrame({'year':df.Year, 'month':df.MonthOfYear, 
                          'day':df.DayOfMonth, 'hour':df["HourOfDay(UTC)"]})
     df["time"] = pd.to_datetime(df2)
