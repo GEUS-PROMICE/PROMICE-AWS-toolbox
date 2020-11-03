@@ -56,27 +56,25 @@ def load_promice(path_promice):
         path_promice: Path to the desired file containing PROMICE data [string]
     
     OUTPUTS:
-        promice_data: Dataframe containing PROMICE data for the desired settings [DataFrame]
+        df: Dataframe containing PROMICE data for the desired settings [DataFrame]
     '''
 
-    df_pro = pd.read_csv(path_promice,delim_whitespace=True)
-    df_pro['time'] = df_pro.Year * np.nan
+    df = pd.read_csv(path_promice,delim_whitespace=True)
+    df['time'] = df.Year * np.nan
     
-    df_pro['time'] = [datetime.datetime(y,m,d,h).replace(tzinfo=pytz.UTC) for y,m,d,h in zip(df_pro['Year'].values,  df_pro['MonthOfYear'].values, df_pro['DayOfMonth'].values, df_pro['HourOfDay(UTC)'].values)]
-    df_pro.set_index('time',inplace=True,drop=False)
+    df['time'] = [datetime.datetime(y,m,d,h).replace(tzinfo=pytz.UTC) for y,m,d,h in zip(df['Year'].values,  df['MonthOfYear'].values, df['DayOfMonth'].values, df['HourOfDay(UTC)'].values)]
+    df.set_index('time',inplace=True,drop=False)
         
     #set invalid values (-999) to nan 
-    df_pro[df_pro==-999.0]=np.nan
-    df_pro['Albedo'] = df_pro['ShortwaveRadiationUp(W/m2)'] / df_pro['ShortwaveRadiationDown(W/m2)']
-    df_pro.loc[df_pro['Albedo']>1,'Albedo']=np.nan
-    df_pro.loc[df_pro['Albedo']<0,'Albedo']=np.nan
+    df[df==-999.0]=np.nan
+    df['Albedo'] = df['ShortwaveRadiationUp(W/m2)'] / df['ShortwaveRadiationDown(W/m2)']
+    df.loc[df['Albedo']>1,'Albedo']=np.nan
+    df.loc[df['Albedo']<0,'Albedo']=np.nan
 
-    # df_pro['RelativeHumidity_w'] = RH_ice2water(df_pro['RelativeHumidity(%)'] ,
-    #                                                    df_pro['AirTemperature(C)'])
-    if df_pro.empty:
-        print('ERROR: Selected year not available')
-        return
-    return df_pro
+    # df['RelativeHumidity_w'] = RH_ice2water(df['RelativeHumidity(%)'] ,
+    #                                                    df['AirTemperature(C)'])
+
+    return df
 #%% 
 def remove_flagged_data(df, site, var_list = ['all'], plot = True):
     '''
