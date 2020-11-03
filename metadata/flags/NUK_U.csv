@@ -1,0 +1,4 @@
+t0,t1,variable,flag,comment,URL_graphic
+2011-10-02T00:00:00+00:00,2011-10-27T00:00:00+00:00,DepthPressureTransducer_Cor(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/NUK_U_dpt_1.png
+2014-02-09T00:00:00+00:00,2014-04-10T00:00:00+00:00,DepthPressureTransducer_Cor(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/NUK_U_dpt_1.png
+2016-09-21T00:00:00+00:00,2016-10-26T00:00:00+00:00,DepthPressureTransducer_Cor(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/NUK_U_dpt_1.png

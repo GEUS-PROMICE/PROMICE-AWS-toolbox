@@ -155,7 +155,7 @@ def plot_hs_adj(df, year_list, site,
     f1.text(0.5, 0.95, site, va='center',  size = 20)
     f1.text(0.02, 0.5, 'Ice ablation (m)', va='center', rotation='vertical', size = 20)
 
-    f1.savefig('figures/hs/'+site+'_DPT_adj'+var1+'.png',dpi=300, bbox_inches='tight')
+    f1.savefig('figures/hs/'+site+'_DPT_adj'+var1+'.png',dpi=90, bbox_inches='tight')
     
 #%%
 def hs_proc(df, site, visualisation=True):

@@ -36,44 +36,105 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 from collections import Counter
 import math
+import datetime
+import pytz
+import os
 import warnings
+import difflib as difflib
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 
-#%%
-def load_data(file, year):
+#%%      
+
+def load_promice(path_promice):
     '''
-    Loading PROMICE data for a given station and all or given year(s)
-    into a DataFrame. 
+    Loading PROMICE data for a given path into a DataFrame.
+    + adding time index
+    + calculating albedo
+    + (optional) calculate RH with regard to water
     
     INTPUTS:
-        file: Path to the desired file containing PROMICE data [string]
-        year: Year to import. If 'all', all the years are imported [int,string]
+        path_promice: Path to the desired file containing PROMICE data [string]
     
     OUTPUTS:
         promice_data: Dataframe containing PROMICE data for the desired settings [DataFrame]
     '''
+
+    df_pro = pd.read_csv(path_promice,delim_whitespace=True)
+    df_pro['time'] = df_pro.Year * np.nan
+    
+    df_pro['time'] = [datetime.datetime(y,m,d,h).replace(tzinfo=pytz.UTC) for y,m,d,h in zip(df_pro['Year'].values,  df_pro['MonthOfYear'].values, df_pro['DayOfMonth'].values, df_pro['HourOfDay(UTC)'].values)]
+    df_pro.set_index('time',inplace=True,drop=False)
         
-    #extract site name
-    site=file.split('/')[-1].split('_')[0]+'_'+file.split('/')[-1].split('_')[1]
-    
-    if site[:3]=='MIT' or site[:3]=='EGP' or site[:3]=='CEN':
-        site=site.split('_')[0]
-    
-    #load data
-    promice_data=pd.read_csv(file, delim_whitespace=True)
-    
     #set invalid values (-999) to nan 
-    promice_data[promice_data==-999.0]=np.nan
-    
-    if year!='all':
-        promice_data=promice_data[promice_data.Year==year]
-    elif isinstance(year, list):
-        promice_data[promice_data.Year.isin(year)]
-    
-    if promice_data.empty:
+    df_pro[df_pro==-999.0]=np.nan
+    df_pro['Albedo'] = df_pro['ShortwaveRadiationUp(W/m2)'] / df_pro['ShortwaveRadiationDown(W/m2)']
+    df_pro.loc[df_pro['Albedo']>1,'Albedo']=np.nan
+    df_pro.loc[df_pro['Albedo']<0,'Albedo']=np.nan
+
+    # df_pro['RelativeHumidity_w'] = RH_ice2water(df_pro['RelativeHumidity(%)'] ,
+    #                                                    df_pro['AirTemperature(C)'])
+    if df_pro.empty:
         print('ERROR: Selected year not available')
         return
-    return promice_data, site
+    return df_pro
+#%% 
+def remove_flagged_data(df, site, var_list = ['all'], plot = True):
+    '''
+    Replace data within a specified variable, between specified dates by NaN.
+    Reads from file "metadata/flags/<site>.csv".
+    
+    INTPUTS:
+        df: PROMICE data with time index
+        site: string of PROMICE site
+        var_list: list of the variables for which data removal should be 
+            conducted (default: all)
+        plot: whether data removal should be plotted
+    
+    OUTPUTS:
+        promice_data: Dataframe containing PROMICE data for the desired settings [DataFrame]
+    '''    
+    df_out = df.copy()
+    if not os.path.isfile('metadata/flags/'+site+'.csv'):
+        print('No erroneous data listed for '+site)
+        return df
+    
+    flag_data = pd.read_csv('metadata/flags/'+site+'.csv')
+    
+    if var_list[0]=='all':
+        var_list =  np.unique(flag_data.variable)
+        
+    print('Deleting flagged data:')
+    for var in var_list:
+        if var not in df_out.columns :
+            var_new = difflib.get_close_matches(var, df_out.columns, n=1)
+            if not var_new:
+                print('Warning: '+var+' in erroneous data file but not in PROMICE dataframe')
+                continue
+            else:
+                print('Warning: interpreting '+var+' as '+var_new[0])
+                var = var_new[0]
+            
+        if plot:
+            fig = plt.figure(figsize = (15,10))
+            df[var].plot(color = 'red',label='bad data')
+            
+        for t0, t1 in zip(pd.to_datetime(flag_data.loc[flag_data.variable==var].t0), 
+                               pd.to_datetime(flag_data.loc[flag_data.variable==var].t1)):
+            print(t0, t1, var)
+            df_out.loc[t0:t1, var] = np.NaN
+            
+        if plot:
+            df_out[var].plot(label='good data',color='green' )
+            plt.title(site)
+            plt.xlabel('Year')
+            plt.ylabel(var)
+            var_save = var
+            for c in ['(', ')', '/']:
+                var_save=var_save.replace(c,'')
+            var_save=var_save.replace('%','Perc')
+                
+            fig.savefig('figures/'+site+'_'+var_save+'_data_removed.png',dpi=70)
+    return df_out
 #%%
 def smooth(x,window_len=14,window='hanning'):
     """smooth the data using a window with requested size.
@@ -163,7 +224,7 @@ def plot_pres_trans_adj(df, year_list,site, ShowInitial = True,tag='1'):
         num_plot=len(year_list)/2
     else:
         num_plot=len(year_list)/2+1
-    f1, ax=plt.subplots(max(2,int(num_plot)),2,figsize=(25, 15))
+    f1, ax=plt.subplots(max(2,int(num_plot)),2,figsize=(15, 15))
     f1.subplots_adjust(hspace=0.2, wspace=0.17,
                        left = 0.08 , right = 0.95 ,
                        bottom = 0.2 , top = 0.9)
@@ -198,7 +259,7 @@ def plot_pres_trans_adj(df, year_list,site, ShowInitial = True,tag='1'):
     f1.text(0.5, 0.95, site, va='center',  size = 20)
     f1.text(0.5, 0.15, 'Day of year', va='center',  size = 20)
     f1.text(0.04, 0.5, 'Ice ablation (m)', va='center', rotation='vertical', size = 20)
-    f1.savefig('figures/'+site+'_dpt_'+tag+'.png',dpi=300, bbox_inches='tight')
+    f1.savefig('figures/'+site+'_dpt_'+tag+'.png',dpi=70, bbox_inches='tight')
 
 #%%                   
 def dpt_proc(df, year, site, visualisation=True):
@@ -387,7 +448,7 @@ def plot_hs_adj(df, year_list, site,
     f1.text(0.5, 0.15, 'Day of year', va='center',  size = 20)
     f1.text(0.04, 0.5, 'Snow height (m)', va='center', rotation='vertical', size = 20)
 
-    f1.savefig('figures/'+site+'_hs_'+tag+'.png',dpi=300, bbox_inches='tight')
+    f1.savefig('figures/'+site+'_hs_'+tag+'.png',dpi=90, bbox_inches='tight')
     
 #%%
 
@@ -552,5 +613,5 @@ def combine_hs_dpt(df, site):
     plt.title(site,size=20)
     plt.autoscale(enable=True, axis='x', tight=True)
     plt.grid()
-    f1.savefig('figures/'+site+'_surface_height.png',dpi=300, bbox_inches='tight')
+    f1.savefig('figures/'+site+'_surface_height.png',dpi=90, bbox_inches='tight')
     return df

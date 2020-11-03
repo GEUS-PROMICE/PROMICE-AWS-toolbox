@@ -44,22 +44,24 @@ PROMICE_stations = [('EGP',(75.6247,-35.9748), 2660),
 for ws in PROMICE_stations:
     site = ws[0]
     print(site)
-    df, site =pl.load_data(file=path_to_PROMICE+site+'_hour_v03.txt', year='all')
+    df =pl.load_promice(path_to_PROMICE+site+'_hour_v03.txt')
+    df_v4 = pl.remove_flagged_data(df, site)
+
+    # # processing pressure transducer
+    # df = pl.dpt_proc(df, year='all', site =site, visualisation=True)
     
-    # processing pressure transducer
-    df = pl.dpt_proc(df, year='all', site =site, visualisation=True)
+    # if len(df) == 0:
+    #     continue
     
-    if len(df) == 0:
-        continue
+    # # processing snow height
+    # df = pl.hs_proc(df,site, visualisation=True)
     
-    # processing snow height
-    df = pl.hs_proc(df,site, visualisation=True)
-    
-    # combining pressure transducer and surface height to reconstruct the surface heigh
-    df = pl.combine_hs_dpt(df, site)
-    
-    # if len(df)>0:
+    # # combining pressure transducer and surface height to reconstruct the surface heigh
+    # df = pl.combine_hs_dpt(df, site)
+ 
+    if len(df)>0:
         # saving to file
-        # df.fillna(-999).to_csv('out/'+site+'_hour_v03_L2.txt', sep="\t")
+        df_v4.fillna(-999).to_csv('out/'+site+'_hour_v03_L3.txt', sep="\t")   
+
 
     
