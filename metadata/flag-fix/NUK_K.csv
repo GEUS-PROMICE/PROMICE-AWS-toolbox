@@ -1,0 +1,7 @@
+t0,t1,variable,adjust_function,adjust_value,comment,URL_graphic
+2014-08-12T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,1.25,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/NUK_K_dpt_1.png
+2014-08-28T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,-1.25,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/NUK_K_dpt_1.png
+2018-06-26T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,0.07,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/NUK_K_dpt_1.png
+2019-08-17T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,1.0,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/NUK_K_dpt_1.png
+2019-09-12T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,-1.0,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/NUK_K_dpt_1.png
+2017-07-04T00:00:00+00:00,,SnowHeight(m),add,-0.7,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flag-fix/graphics/NUK_K_hs_1.png

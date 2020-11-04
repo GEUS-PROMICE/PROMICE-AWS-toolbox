@@ -1,0 +1,8 @@
+t0,t1,variable,adjust_function,adjust_value,comment,URL_graphic
+2009-08-12T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,-6.6,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/MIT_dpt_1.png
+2011-08-11T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,-0.08,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/MIT_dpt_1.png
+2012-09-06T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,-13.7,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/MIT_dpt_1.png
+2019-01-12T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,4.4,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/MIT_dpt_1.png
+2009-08-13T00:00:00+00:00,,SurfaceHeight(m),add,-3.2,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flag-fix/graphics/MIT_hs_2.png
+2012-09-06T00:00:00+00:00,,SurfaceHeight(m),add,-2.0,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flag-fix/graphics/MIT_hs_2.png
+2014-08-08T00:00:00+00:00,,SurfaceHeight(m),add,-1.0,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flag-fix/graphics/MIT_hs_2.png

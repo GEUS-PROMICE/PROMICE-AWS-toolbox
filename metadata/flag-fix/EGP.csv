@@ -1,0 +1,5 @@
+t0,t1,variable,adjust_function,adjust_value,comment,URL_graphic
+2017-05-18T00:00:00+00:00,,SnowHeight(m),add,0.5,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flag-fix/graphics/EGP_hs_1.png
+2018-05-30T00:00:00+00:00,,SnowHeight(m),add,0.6,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flag-fix/graphics/EGP_hs_1.png
+2019-05-31T00:00:00+00:00,,SnowHeight(m),add,0.4,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flag-fix/graphics/EGP_hs_1.png
+2019-06-01T00:00:00+00:00,,SurfaceHeight(m),add,0.18,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flag-fix/graphics/EGP_hs_2.png

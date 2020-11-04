@@ -1,0 +1,5 @@
+t0,t1,variable,adjust_function,adjust_value,comment,URL_graphic
+2010-08-07T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,-8.07,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/TAS_U_dpt_1.png
+2011-07-22T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,-1.558,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/TAS_U_dpt_1.png
+2014-08-04T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,-1.29,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/TAS_U_dpt_1.png
+2014-05-18T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,1.27,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/TAS_U_dpt_1.png

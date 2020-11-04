@@ -1,0 +1,4 @@
+t0,t1,variable,adjust_function,adjust_value,comment,URL_graphic
+2018-08-30T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,-5.3,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/QAS_M_dpt_1.png
+2019-08-30T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,4.0,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/QAS_M_dpt_1.png
+2019-09-02T00:00:00+00:00,,SurfaceHeight(m),add,-2.0,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flag-fix/graphics/QAS_M_hs_2.png
