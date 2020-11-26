@@ -77,6 +77,7 @@ for ws in PROMICE_stations:
         # df_v4['SnowHeight(m)'] = np.NaN;
        
     # # combining pressure transducer and surface height to reconstruct the surface heigh
+    print('## Summarizing surface height at '+site)
     df_v4 = pl.combine_hs_dpt(df_v4, site)
  
     # plt.figure()

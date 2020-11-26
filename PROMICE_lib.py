@@ -143,7 +143,9 @@ def remove_flagged_data(df, site, var_list = ['all'], plot = True):
             plt.legend() 
             plt.title(site)
             fig.savefig('figures/'+site+'_'+var_save+'_data_removed.png',dpi=70)
+            print(' ')
             print('![Erroneous data at '+ site+'](figures/'+site+'_'+var_save+'_data_removed.png)')
+            print(' ')
 
     return df_out
 
@@ -151,7 +153,7 @@ def remove_flagged_data(df, site, var_list = ['all'], plot = True):
 def adjust_data(df, site):
     df_out = df.copy()
     if not os.path.isfile('metadata/flag-fix/'+site+'.csv'):
-        print('No data to fix for '+site)
+        print('No data to fix at '+site)
         return df_out
     
     adj_info = pd.read_csv('metadata/flag-fix/'+site+'.csv')
@@ -187,7 +189,9 @@ def adjust_data(df, site):
         plt.legend()
         plt.title(site)
         fig.savefig('figures/'+site+'_adj_'+var+'.jpeg',dpi=120, bbox_inches='tight')
+        print(' ')
         print('![Adjusted data at '+ site+'](figures/'+site+'_adj_'+var+'.jpeg)')
+        print(' ')
 
     return df_out
 
@@ -427,4 +431,8 @@ def combine_hs_dpt(df, site):
     for i, y in enumerate(np.unique(years)):
         plt.axvspan(df.index[ind_start[i]],df.index[ind_end[i]], color='orange', alpha=0.1)
     f1.savefig('figures/'+site+'_surface_height.png',dpi=90, bbox_inches='tight')
+    print(' ')
+    print('![Surface height adjustement at '+ site+'](figures/'+site+'_surface_height.png)')
+    print(' ')
+            
     return df
