@@ -142,7 +142,7 @@ def remove_flagged_data(df, site, var_list = ['all'], plot = True):
             plt.legend() 
             plt.title(site)
             fig.savefig('figures/'+site+'_'+var_save+'_data_removed.png',dpi=70)
-            print('[Erroneous data at '+ site+'](figures/'+site+'_'+var_save+'_data_removed.png)')
+            print('![Erroneous data at '+ site+'](figures/'+site+'_'+var_save+'_data_removed.png)')
 
     return df_out
 
@@ -150,7 +150,7 @@ def remove_flagged_data(df, site, var_list = ['all'], plot = True):
 def adjust_data(df, site):
     df_out = df.copy()
     if not os.path.isfile('metadata/flag-fix/'+site+'.csv'):
-        print('No erroneous data listed for '+site)
+        print('No data to fix for '+site)
         return df_out
     
     adj_info = pd.read_csv('metadata/flag-fix/'+site+'.csv')
@@ -162,7 +162,7 @@ def adjust_data(df, site):
             print(var+' not in datafile')
             continue
         else:
-            print('###Adjusting '+var)
+            print('### Adjusting '+var)
         for t0, t1, func, val in zip(adj_info.loc[var].t0,
                                      adj_info.loc[var].t1,
                                      adj_info.loc[var].adjust_function,
@@ -183,7 +183,7 @@ def adjust_data(df, site):
         plt.legend()
         plt.title(site)
         fig.savefig('figures/'+site+'_adj_'+var+'.jpeg',dpi=120, bbox_inches='tight')
-        print('[Adjusted data at '+ site+'](figures/'+site+'_adj_'+var+'.jpeg)')
+        print('![Adjusted data at '+ site+'](figures/'+site+'_adj_'+var+'.jpeg)')
 
     return df_out
 
