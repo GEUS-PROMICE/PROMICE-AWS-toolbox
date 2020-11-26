@@ -1,0 +1,15 @@
+t0,t1,variable,adjust_function,adjust_value,comment,URL_graphic
+2010-10-07T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,-0.1,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/KAN_L_dpt_1.png
+2011-06-04T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,-4.0,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/KAN_L_dpt_1.png
+2012-08-21T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,-11.7,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/KAN_L_dpt_1.png
+2014-05-13T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,0.07,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/KAN_L_dpt_1.png
+2015-04-29T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,-7.08,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/KAN_L_dpt_1.png
+2015-07-07T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,-0.4,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/KAN_L_dpt_1.png
+2016-07-16T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,-1.6,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/KAN_L_dpt_1.png
+2017-09-01T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,-3.5,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/KAN_L_dpt_1.png
+2018-08-29T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,-11.3,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/KAN_L_dpt_1.png
+2019-09-05T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,6.5,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/KAN_L_dpt_1.png
+2011-06-03T00:00:00+00:00,,SurfaceHeight(m),add,-3.0,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flag-fix/graphics/KAN_L_hs_2.png
+2013-09-15T00:00:00+00:00,,SurfaceHeight(m),add,-2.2,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flag-fix/graphics/KAN_L_hs_2.png
+2015-09-15T00:00:00+00:00,,SurfaceHeight(m),add,-2.0,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flag-fix/graphics/KAN_L_hs_2.png
+2019-09-05T00:00:00+00:00,,SurfaceHeight(m),add,-5.0,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flag-fix/graphics/KAN_L_hs_2.png

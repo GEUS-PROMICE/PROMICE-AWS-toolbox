@@ -1,4 +1,9 @@
 t0,t1,variable,flag,comment,URL_graphic
+2008-01-01T00:00:00+00:00,2020-01-01T00:00:00+00:00,SnowHeight(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/KAN_L_dpt_1.png
+2009-08-20T00:00:00+00:00,2010-06-01T00:00:00+00:00,SurfaceHeight(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/KAN_L_dpt_1.png
+2011-11-01T00:00:00+00:00,2012-02-01T00:00:00+00:00,SurfaceHeight(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/KAN_L_dpt_1.png
+2014-06-20T00:00:00+00:00,2014-08-15T00:00:00+00:00,SurfaceHeight(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/KAN_L_dpt_1.png
+2016-01-01T00:00:00+00:00,2016-08-15T00:00:00+00:00,SurfaceHeight(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/KAN_L_dpt_1.png
 2009-09-17T00:00:00+00:00,2009-10-07T00:00:00+00:00,DepthPressureTransducer_Cor(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/KAN_L_dpt_1.png
 2010-10-02T00:00:00+00:00,2010-10-12T00:00:00+00:00,DepthPressureTransducer_Cor(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/KAN_L_dpt_1.png
 2012-10-06T00:00:00+00:00,2012-10-26T00:00:00+00:00,DepthPressureTransducer_Cor(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/KAN_L_dpt_1.png

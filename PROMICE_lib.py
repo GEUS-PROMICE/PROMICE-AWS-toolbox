@@ -40,7 +40,8 @@ import datetime
 import pytz
 import os
 import warnings
-import difflib as difflib
+import difflib
+
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 #%%      
@@ -70,6 +71,8 @@ def load_promice(path_promice):
     df['Albedo'] = df['ShortwaveRadiationUp(W/m2)'] / df['ShortwaveRadiationDown(W/m2)']
     df.loc[df['Albedo']>1,'Albedo']=np.nan
     df.loc[df['Albedo']<0,'Albedo']=np.nan
+    df['SnowHeight(m)'] = 2.6 - df['HeightSensorBoom(m)']
+    df['SurfaceHeight(m)'] = 1 - df['HeightStakes(m)']
 
     # df['RelativeHumidity_w'] = RH_ice2water(df['RelativeHumidity(%)'] ,
     #                                                    df['AirTemperature(C)'])
@@ -103,21 +106,27 @@ def remove_flagged_data(df, site, var_list = ['all'], plot = True):
         
     print('Deleting flagged data:')
     for var in var_list:
+        var_save = var
         if var not in df_out.columns :
-            var_new = difflib.get_close_matches(var, df_out.columns, n=1)
-            if not var_new:
-                print('Warning: '+var+' in erroneous data file but not in PROMICE dataframe')
-                continue
+            if var == 'SnowHeight1m':
+                var ='SnowHeight(m)'
+            elif var == 'SnowHeight2m':
+                var ='SurfaceHeight(m)'
             else:
-                print('Warning: interpreting '+var+' as '+var_new[0])
-                var = var_new[0]
+                var_new = difflib.get_close_matches(var, df_out.columns, n=1)
+                if not var_new:
+                    print('Warning: '+var+' in erroneous data file but not in PROMICE dataframe')
+                    continue
+                else:
+                    print('Warning: interpreting '+var+' as '+var_new[0])
+                    var = var_new[0]
             
         if plot:
             fig = plt.figure(figsize = (15,10))
             df[var].plot(color = 'red',label='bad data')
             
-        for t0, t1 in zip(pd.to_datetime(flag_data.loc[flag_data.variable==var].t0), 
-                               pd.to_datetime(flag_data.loc[flag_data.variable==var].t1)):
+        for t0, t1 in zip(pd.to_datetime(flag_data.loc[flag_data.variable==var_save].t0), 
+                               pd.to_datetime(flag_data.loc[flag_data.variable==var_save].t1)):
             print(t0, t1, var)
             df_out.loc[t0:t1, var] = np.NaN
             
@@ -130,9 +139,54 @@ def remove_flagged_data(df, site, var_list = ['all'], plot = True):
             for c in ['(', ')', '/']:
                 var_save=var_save.replace(c,'')
             var_save=var_save.replace('%','Perc')
-                
+            plt.legend() 
+            plt.title(site)
             fig.savefig('figures/'+site+'_'+var_save+'_data_removed.png',dpi=70)
+            print('[Erroneous data at '+ site+'](figures/'+site+'_'+var_save+'_data_removed.png)')
+
     return df_out
+
+#%%
+def adjust_data(df, site):
+    df_out = df.copy()
+    if not os.path.isfile('metadata/flag-fix/'+site+'.csv'):
+        print('No erroneous data listed for '+site)
+        return df_out
+    
+    adj_info = pd.read_csv('metadata/flag-fix/'+site+'.csv')
+    adj_info=adj_info.sort_values(by=['variable','t0']) 
+    adj_info.set_index(['variable','t0'],drop=False,inplace=True)
+
+    for var in np.unique(adj_info.variable):
+        if var not in df.columns:
+            print(var+' not in datafile')
+            continue
+        else:
+            print('###Adjusting '+var)
+        for t0, t1, func, val in zip(adj_info.loc[var].t0,
+                                     adj_info.loc[var].t1,
+                                     adj_info.loc[var].adjust_function,
+                                     adj_info.loc[var].adjust_value):
+            print(t0,func,val)
+            if np.isnan(t1):
+                t1 = df_out.time[-1].isoformat()
+            if func == 'add': 
+                df_out.loc[t0:t1,var] = df_out.loc[t0:t1,var].values + val
+                
+        fig = plt.figure(figsize=(10,5))
+        df[var].plot(label='before adjustment')
+        df_out[var].plot(label='after adjustment')  
+        [plt.axvline(t,linestyle='--',color = 'red') for t in adj_info.loc[var].t0.values]
+        plt.axvline(np.nan,linestyle='--', color = 'red', label='Adjustment times') 
+        plt.xlabel('Year')
+        plt.ylabel(var)
+        plt.legend()
+        plt.title(site)
+        fig.savefig('figures/'+site+'_adj_'+var+'.jpeg',dpi=120, bbox_inches='tight')
+        print('[Adjusted data at '+ site+'](figures/'+site+'_adj_'+var+'.jpeg)')
+
+    return df_out
+
 #%%
 def smooth(x,window_len=14,window='hanning'):
     """smooth the data using a window with requested size.
@@ -209,407 +263,164 @@ def hampel(vals_orig, k=7*24, t0=3):
     outlier_idx[0:round(k/2)]=False
     vals.loc[outlier_idx]=np.nan
     return(vals)
-#%%
+
 def firstNonNan(listfloats):
+  if not np.any(~np.isnan(listfloats)):
+      return np.nan
   for item in listfloats:
     if math.isnan(item) == False:
       return item
-#%%            
-def plot_pres_trans_adj(df, year_list,site, ShowInitial = True,tag='1'):
-    fs=13
-    mpl.rc('xtick', labelsize=fs); mpl.rc('ytick', labelsize=fs); mpl.rc('lines', markersize=3)
-    if round(len(year_list)/2) == len(year_list)/2:
-        num_plot=len(year_list)/2
-    else:
-        num_plot=len(year_list)/2+1
-    f1, ax=plt.subplots(max(2,int(num_plot)),2,figsize=(15, 15))
-    f1.subplots_adjust(hspace=0.2, wspace=0.17,
-                       left = 0.08 , right = 0.95 ,
-                       bottom = 0.2 , top = 0.9)
-    for k,y in enumerate(year_list):
-        z = df.loc[df.Year==y, "DepthPressureTransducer_Cor_adj(m)"]
-        z_ini = df.loc[df.Year==y, "DepthPressureTransducer_Cor(m)"]
-        doy = df.loc[df.Year==y, "DayOfYear"]+df.loc[df.Year==y, "HourOfDay(UTC)"]/24
-        
-        try: 
-            pres_trans_adj = pd.read_csv('metadata/pres_trans_adj.csv',sep='\s*,\s*',engine='python')
-            pres_trans_adj.set_index(['site', 'year'],inplace=True)
-            pres_trans_adj.sort_index(inplace=True)
-            adj_start = pres_trans_adj.loc[(site,y),'adjust_start'].values
-        except:                
-            adj_start = [np.nan]
-        i,j = np.unravel_index(k, ax.shape)
-
-        if ShowInitial:
-            ax[i,j].plot(doy, z_ini -firstNonNan(z_ini) +firstNonNan(z),
-                         'ro-',  label='Raw')
-        ax[i,j].plot(doy, z,'go-', label='Processed')
-        for d in adj_start:
-            ind = np.logical_and(doy>d-10,doy<d+10) 
-            ax[i,j].scatter(d, z.loc[ind].mean(),200,
-                      marker="o",facecolors='none', edgecolors='black',
-                      linewidths =3, label='Adjustment')
-        ax[i,j].set_xlim((0,365))
-        if k == 0:
-            ax[i,j].legend(loc='upper right')
-        ax[i,j].annotate(str(y),
-            xy=(0.05, 0.1), xycoords='axes fraction',size = 15)
-    f1.text(0.5, 0.95, site, va='center',  size = 20)
-    f1.text(0.5, 0.15, 'Day of year', va='center',  size = 20)
-    f1.text(0.04, 0.5, 'Ice ablation (m)', va='center', rotation='vertical', size = 20)
-    f1.savefig('figures/'+site+'_dpt_'+tag+'.png',dpi=70, bbox_inches='tight')
-
-#%%                   
-def dpt_proc(df, year, site, visualisation=True):
-    '''
-        Processing of Depth Pressure Sensor (DPT) time series using PROMICE 2019-08-02
-        datasets.        
-        
-        INPUTS:
-            promice_data: Dataframe imported using load_data() [DataFrame]
-            year: Year of promice_data to process [int, list or 'all']
-            
-        OUTPUTS:
-            DPT_proc: Processed ice ablation time series [pandas.series]
-            albedo: Albedo time series associated with ice ablation [pandas.series]
-            DPT_flag: Assessement of the ease to determine bare ice appearance
-                      from ice ablation (0=no data, 1=, 2=low confidence, 
-                      3= high confidence) [int]
-            albedo_flag: Determines if an albedo time series will be excluded (0)
-                          or not (1) [int]
-            BID: Bare Ice Day, day of bare ice appearance based on ice ablation [float]
-    '''
-
-    if np.sum(np.isnan(df["DepthPressureTransducer_Cor(m)"])) == df["DepthPressureTransducer_Cor(m)"].shape[0]: 
-        print("No pressure transducer at "+site)
-        return []
-    #search for available years
-    if year=='all':
-        year=list(Counter(df.Year))
-    elif isinstance(year, list):
-        year=year
-    else:
-        year=[year]
-    year_list = []
-        
-    # import pdb; pdb.set_trace()
-    if "DepthPressureTransducer_Cor_adj(m)" in df.columns:
-        print("Warning: overwritting DepthPressureTransducer_Cor_adj(m)")
-        df =df.drop(columns="DepthPressureTransducer_Cor_adj(m)", axis=0)
-        if "FlagPressureTransducer" in df.columns:
-            df =df.drop(columns="FlagPressureTransducer", axis=0)
-        
-    df.loc[:,"DepthPressureTransducer_Cor_adj(m)"] = np.nan
-    df.loc[:,"FlagPressureTransducer"] = np.nan
-    # 0 = original data available
-    # 1 = no data available
-    # 2 = data available but removed manually
-    # 3 = data removed by filter
-    # 4 = interpolated
-    
-    for i,y in enumerate(year):
-        # import pdb; pdb.set_trace()
-        df_y = df.loc[df.Year==y]
-        z=df_y["DepthPressureTransducer_Cor(m)"].copy()
-        flag = z*0
-        flag[np.isnan(z)]=1
-        try:
-            doy = df_y.DayOfYear.values + df_y["HourOfDay(UTC)"].values/24
-            dt = 1
-        except:
-            doy = df_y.DayOfYear.values
-            dt = 24
-            
-        # removing data manually
-        pres_trans_err = pd.read_csv('metadata/pres_trans_err.csv',sep='\s*,\s*',engine='python')
-        pres_trans_err.set_index(['site', 'year'],inplace=True)
-        pres_trans_err.sort_index(inplace=True)
-        if pres_trans_err.index.isin([(site,y)]).any():
-            err_start = pres_trans_err.loc[(site,y),'err_start'].values
-            err_end = pres_trans_err.loc[(site,y),'err_end'].values
-            for k, d in enumerate(err_start):
-                z[np.logical_and(doy>=d,doy<=err_end[k])] = np.nan
-                flag[np.logical_and(doy>=d,doy<=err_end[k])] = 2
-        else:
-            print("No erroneous period for "+site+" in "+str(y))
-            
-        # adjusting pressure transducer depth
-
-        pres_trans_adj = pd.read_csv('metadata/pres_trans_adj.csv',sep='\s*,\s*',engine='python')
-        pres_trans_adj.set_index(['site', 'year'],inplace=True)
-        pres_trans_adj.sort_index(inplace=True)
-        
-        if pres_trans_adj.index.isin([(site,y)]).any():
-            adj_start = pres_trans_adj.loc[(site,y),'adjust_start'].values
-            adj_val = pres_trans_adj.loc[(site,y),'adjust_val'].values
-            for k, d in enumerate(adj_start):
-                z[doy>=d] = z[doy>=d] + adj_val[k]
-        else:
-            print("No shift information for "+site+" in "+str(y))
-            adj_start = []
-            
-        # interpolating
-        ind1 = np.isnan(z)
-        z=z.interpolate(limit=32)
-        ind2 = np.isnan(z)
-        flag[np.logical_and(ind1,~ind2)] = 4
-        
-        # filtering
-        ind1 = np.isnan(z.values)
-        z = hampel(z)    
-        z[doy<140] = hampel(z[doy<140] ,k=30*24,t0=1)
-        vals = z.values
-        vals[np.isnan(vals)]=-9999
-        thresh = 10 # m/day
-        msk = np.where(np.abs(np.gradient(vals)) >= thresh/24*dt)[0]
-        vals[msk] = np.nan
-        vals[msk-1] = np.nan
-        vals[np.minimum(msk+1,vals.shape[0]-1)] = np.nan
-        vals[vals==-9999]=np.nan
-        z=pd.Series(vals)
-        ind2 = np.isnan(z.values)
-        flag[np.logical_and(~ind1,ind2)] = 3
-        
-        # interpolating
-        ind1 = np.isnan(z.values)
-        z=z.interpolate(method='linear',limit=32)
-        ind2 = np.isnan(z.values)
-        flag[np.logical_and(ind1,~ind2)] = 4
-        
-        z=smooth(z.values)
-        if np.sum(~np.isnan(z))>1:
-            year_list.append(y)
-            z = z - firstNonNan(z)
-            
-        # updating values in PROMICE table
-        df.loc[df.Year==y, "DepthPressureTransducer_Cor_adj(m)"] = z
-        df.loc[df.Year==y, "FlagPressureTransducer"] = flag
-        
-    if visualisation:
-        plot_pres_trans_adj(df, year_list,site, ShowInitial = True,tag='1')
-        plot_pres_trans_adj(df, year_list,site, ShowInitial = False,tag='2')
-    return df
-
-#%%
-def plot_hs_adj(df, year_list, site,  
-                var1 = "SnowHeight1_adj(m)", var2 = "SnowHeight1(m)",
-                tag='1'):
-    fs=13
-    mpl.rc('xtick', labelsize=fs); mpl.rc('ytick', labelsize=fs); mpl.rc('lines', markersize=3)
-    if round(len(year_list)/2) == len(year_list)/2:
-        num_plot=len(year_list)/2
-    else:
-        num_plot=len(year_list)/2+1
-    f1, ax=plt.subplots(max(2,int(num_plot)),2,figsize=(25, 15))
-    f1.subplots_adjust(hspace=0.2, wspace=0.17,
-                       left = 0.08 , right = 0.95 ,
-                       bottom = 0.2 , top = 0.9)
-    for k,y in enumerate(year_list):
-        z1 = df.loc[df.Year==y, var1]
-        z2 = df.loc[df.Year==y, var2]
-        doy = df.loc[df.Year==y, "DayOfYear"]+df.loc[df.Year==y, "HourOfDay(UTC)"]/24
-        
-        hs_adj = pd.read_csv('metadata/hs_adj.csv',sep='\s*,\s*',engine='python')
-        hs_adj.set_index(['site','year', 'instr'],inplace=True)
-        hs_adj.sort_index(inplace=True)
-        
-        adj_start_1 = [np.nan]
-        adj_start_2 = [np.nan]
-        if np.any(hs_adj.index.isin([(site,y,1)])):
-            adj_start_1 = hs_adj.loc[(site,y,1),'adjust_start'].values
-        if np.any(hs_adj.index.isin([(site,y,2)])):
-            adj_start_2 = hs_adj.loc[(site,y,2),'adjust_start'].values
-
-        i,j = np.unravel_index(k, ax.shape)
-        ax[i,j].plot(doy, z1-firstNonNan(z1),'ro-', label=var1)
-        if var2 in df.columns:
-            ax[i,j].plot(doy, z2-firstNonNan(z2),  'go-',  label=var2)
-        for var in [var1, var2]:
-            if var=="SnowHeight1_adj(m)":
-                adj_start = adj_start_1
-            elif var == "SnowHeight2_adj(m)":
-                adj_start = adj_start_2
-            else:
-                adj_start = [np.nan]
-            
-            for d in adj_start:
-                ind = np.logical_and(doy>d-10,doy<d+10) 
-                ax[i,j].scatter(d, df.loc[df.Year==y, var].loc[ind].mean(),200,
-                          marker="o",facecolors='none', edgecolors='black',
-                          linewidths =3, label='Adjustment')
-        ax[i,j].set_xlim((0,365))
-        if k == 0:
-            ax[i,j].legend(loc='upper right')
-        ax[i,j].annotate(str(y),
-            xy=(0.05, 0.1), xycoords='axes fraction',size = 15)
-    f1.text(0.5, 0.95, site, va='center',  size = 20)
-    f1.text(0.5, 0.15, 'Day of year', va='center',  size = 20)
-    f1.text(0.04, 0.5, 'Snow height (m)', va='center', rotation='vertical', size = 20)
-
-    f1.savefig('figures/'+site+'_hs_'+tag+'.png',dpi=90, bbox_inches='tight')
-    
-#%%
-
-def hs_proc(df, site, visualisation=True):
-    year_list = np.unique(df.Year)
-
-    df["SnowHeight1(m)"] = 2.6 - df["HeightSensorBoom(m)"] 
-    df["SnowHeight2(m)"] = 1 - df["HeightStakes(m)"] 
-
-    z1 = df["SnowHeight1(m)"].copy()
-    z2 = df["SnowHeight2(m)"].copy()
-    # adjusting pressure transducer depth
-    df2 = pd.DataFrame({'year':df.Year, 'month':df.MonthOfYear, 
-                         'day':df.DayOfMonth, 'hour':df["HourOfDay(UTC)"]})
-    df["time"] = pd.to_datetime(df2)
-
-    # try: 
-    hs_adj = pd.read_csv('metadata/hs_adj.csv',sep='\s*,\s*',engine='python')
-    hs_adj["time"] = (np.asarray(hs_adj['year'], dtype='datetime64[Y]')-1970)+(np.asarray(hs_adj['adjust_start'], dtype='timedelta64[D]')-1)
-    hs_adj.set_index(['site', 'instr'],inplace=True)
-    hs_adj.sort_index(inplace=True)
-    
-    if ~np.isin(site, hs_adj.index.get_level_values('site')):
-        print('No adjustment for '+site)
-        df["SnowHeight1_adj(m)"] = df["SnowHeight1(m)"]
-        df["SnowHeight2_adj(m)"] = df["SnowHeight2(m)"]
-        plot_hs_adj(df, year_list = year_list, site=site, 
-                    var1 = "SnowHeight1_adj(m)", var2 = "SnowHeight2_adj(m)",
-                    tag='1')
-        return df
-    
-    # first instrument
-    if np.isin(1, hs_adj.loc[site].index.get_level_values('instr')):
-        adj_start = hs_adj.loc[(site,1),'time'].values
-        adj_val = hs_adj.loc[(site,1),'adjust_val'].values
-        for k, d in enumerate(adj_start):
-            z1.loc[df.time>=d] = z1.loc[df.time>=d] + adj_val[k]
-        
-    # second instrument
-    if np.isin(2, hs_adj.loc[site].index.get_level_values('instr')):
-        adj_start = hs_adj.loc[(site,2), 'time'].values
-        adj_val = hs_adj.loc[(site,2),'adjust_val'].values
-        for k, d in enumerate(adj_start):
-            z2.loc[df.time>=d] = z2.loc[df.time>=d] + adj_val[k]
-            
-    
-    if ~np.any(~np.isnan(df["HeightSensorBoom(m)"] )):
-        print("No HeightSensorBoom at "+site)
-        return
-
-    # interpolating
-    z1=z1.interpolate(limit=32)
-    z1 = hampel(z1, k = 7*6)    
-    vals = z1.values
-    vals[np.isnan(vals)]=-9999
-    msk = np.where(np.abs(np.gradient(vals)) >= 0.1)[0]
-    vals[msk] = np.nan
-    vals[np.maximum(msk-1,0)] = np.nan
-    vals[np.minimum(msk+1,vals.shape[0]-1)] = np.nan
-    vals[vals==-9999]=np.nan
-    z1=pd.Series(vals)
-    z1 = hampel(z1, k = 7*12,t0=1)    
-    df["SnowHeight1_adj(m)"]=z1.values
-
-    # interpolating
-    z2=z2.interpolate(limit=32)
-    z2 = hampel(z2, k = 7*6)    
-    vals = z2.values
-    vals[np.isnan(vals)]=-9999
-    msk = np.where(np.abs(np.gradient(vals)) >= 0.1)[0]
-    vals[msk] = np.nan
-    vals[msk-1] = np.nan
-    vals[np.minimum(msk+1,vals.shape[0]-1)] = np.nan
-    vals[vals==-9999]=np.nan
-    z2=pd.Series(vals)
-    z2 = hampel(z2, k = 7*12,t0=1)    
-    df["SnowHeight2_adj(m)"]=z2.values
-
-    if visualisation:
-        plot_hs_adj(df, year_list = year_list, site=site, 
-                    var1 = "SnowHeight1(m)", var2 = "SnowHeight1_adj(m)",
-                    tag='1')
-        plot_hs_adj(df, year_list = year_list, site=site, 
-                    var1 = "SnowHeight2(m)", var2 = "SnowHeight2_adj(m)",
-                    tag='2')
-        plot_hs_adj(df, year_list = year_list, site=site, 
-                    var1 = "SnowHeight1_adj(m)", var2 = "SnowHeight2_adj(m)",
-                    tag='3')
-    return df
 
 #%%
 def combine_hs_dpt(df, site):
-    # import pdb; pdb.set_trace()
+    # smoothing and filtering pressure transducer data
+    df["DepthPressureTransducer_Cor_adj(m)"] = hampel(df["DepthPressureTransducer_Cor(m)"].interpolate(limit=72)).values
+    df["SnowHeight_adj(m)"] = hampel(df["SnowHeight(m)"].interpolate(limit=72)).values
+    df["SurfaceHeight_adj(m)"] = hampel(df["SurfaceHeight(m)"].interpolate(limit=72)).values
+    
+    
+    # defining ice ablation period   
+    smoothed_PT =  df['DepthPressureTransducer_Cor(m)'].interpolate(limit=72).rolling(24*7).mean()
+    smoothed_PT = smoothed_PT.rolling(24*7).mean()
+    ind_ablation = np.logical_and(smoothed_PT.diff().values <-0.00035, 
+                                  np.isin(df.index.month, [6, 7, 8, 9]))
+    ind_accumulation =  ~ind_ablation
+    
+    # plotting the ablation season 
 
-    if "DepthPressureTransducer_Cor_adj(m)" in df.columns:
-        z=df["DepthPressureTransducer_Cor_adj(m)"].copy()
-        if np.any(~np.isnan(z)):
-            doy = df["DayOfYear"]+df["HourOfDay(UTC)"]/24
-            ind = np.where(doy == 365)[0]
-            for i in ind:
-                if np.any(~np.isnan(z[(i+2*24):]))&np.any(~np.isnan(z[:i])):
-                    z.iloc[i:] = z.iloc[i:] - firstNonNan(z[(i+2*24):]) + firstNonNan(np.flip(z[:i]))
-                    z.iloc[i:(i+2*24)]=np.nan
-            vals = z.values
-            vals[np.isnan(vals)]=-9999
-            msk = np.where(np.abs(np.gradient(vals)) >= 0.1)[0]
-            vals[msk] = np.nan
-            vals[msk-1] = np.nan
-            vals[np.minimum(msk+1,vals.shape[0]-1)] = np.nan
-            vals[vals==-9999]=np.nan
-            z=pd.Series(vals)
-            z.loc[z>0]=np.nan
-            z = hampel(z,7*24,1)
-            z.interpolate(limit=32,inplace = True)
-            df["DepthPressureTransducer_Cor_adj(m)"] = z
-        else:
-            return df
-    else:
-        return df
-            
-    if "SnowHeight1_adj(m)" in df.columns:
-        hs1=df["SnowHeight1_adj(m)"].copy()
-        if np.any(~np.isnan(hs1)):
-            doy = df["DayOfYear"]+df["HourOfDay(UTC)"]/24
-            ind = np.where(doy == 260)[0]
-            for i in ind:
-                # import pdb; pdb.set_trace()
-                if np.any(~np.isnan(z.iloc[i:])):
-                    hs1.iloc[i:] = hs1.iloc[i:] - firstNonNan(hs1.iloc[i:])  + firstNonNan(z.iloc[i:])
-        df["SurfaceHeight1_adj(m)"] = hs1
+    #adjusting Snow and Surface heights to the PT-derived height
+    hs1=df["SnowHeight_adj(m)"].interpolate(limit=24*14).copy()
+    hs2=df["SurfaceHeight_adj(m)"].interpolate(limit=24*14).copy()
+    z=df["DepthPressureTransducer_Cor_adj(m)"].copy()
+
+    years = df.index.year.values
+    ind_start = years.astype(int)
+    ind_end =  years.astype(int)
+    for i, y in enumerate(np.unique(years)):
+    #for each year
+        ind_yr = years==y
+        ind_abl_yr = np.logical_and(ind_yr, ind_ablation)
+        if np.any(ind_abl_yr):
+            # if there are some ablation flagged for that year
+            # then find begining and end
+            ind_start[i] = np.argwhere(ind_abl_yr)[0][0]
+            ind_end[i] = np.argwhere(ind_abl_yr)[-1]
+            hs1.iloc[ind_start[i]:ind_end[i]] = np.nan
+            # during the ablation we can delete the data from SR1 unless there is no other sensor
+        # elif np.any(np.isin(df.index[ind_yr].month.values, [6, 7, 8])):
+        #     # if there is any data from june-august that year
+        #     # then use first and last day of JJA as ablation season
+        #     ind_abl_yr = np.logical_and(ind_yr, np.isin(df.index.month.values, [6, 7, 8]))
+        #     ind_start[i] = np.argwhere(ind_abl_yr)[0][0]
+        #     ind_end[i] = np.argwhere(ind_abl_yr)[-1]
+        # else:
+        #     # otherwise left as nan
+        #     ind_start[i] = -999
+        #     ind_end[i] = -999
+        #     continue
+    plt.figure()
+    df['SnowHeight(m)'].plot(color='darkgray',label='')
+    df['SnowHeight_adj(m)'].plot(label='SnowHeight(m)')
+    df['SurfaceHeight(m)'].plot(color='darkgray',label='')
+    df['SurfaceHeight_adj(m)'].plot(label='SurfaceHeight(m)')
+    df['DepthPressureTransducer_Cor(m)'].plot(color='darkgray',label='')
+    df['DepthPressureTransducer_Cor_adj(m)'].plot(label='DepthPressureTransducer_Cor(m)')
+    plt.legend()  
+    plt.title(site)
+    for i, y in enumerate(np.unique(years)):
+        plt.axvspan(df.index[ind_start[i]],df.index[ind_end[i]], color='orange', alpha=0.1)
+    
+    # plt.figure()
+    # smoothed_PT.diff().plot()
+    # plt.axhline(-0.00035)
+    # for i, y in enumerate(np.unique(years)):
+    #     plt.axvspan(df.index[ind_start[i]],df.index[ind_end[i]], color='orange', alpha=0.1)
+
+        # if np.any(~np.isnan(hs1.iloc[ind_start[i]:ind_end[i]])) or np.any(~np.isnan(z.iloc[ind_start[i]:ind_end[i]])):
+        #     hs1.iloc[ind_start[i]:ind_end[i]] = np.nan
+    hs2 = hs2 - firstNonNan(hs2.values)
+    plt.figure()
+    z.plot()  
+    hs1.plot()  
+    plt.title(site)
+    # adjusting hs1 at the end of each ablation period
+    for i, y in enumerate(np.unique(years)):
+        # and adjust the end of ablation SR1 height to the PT-derived height         
+        if np.any(~np.isnan(z.iloc[(ind_end[i]-24*7):(ind_end[i]+24*7)])) :
+            hs1.iloc[ind_end[i]:] = hs1.iloc[ind_end[i]:] - \
+                np.nanmean(hs1.iloc[(ind_end[i]-24*7):(ind_end[i]+24*7)])  + \
+                    np.nanmean(z.iloc[(ind_end[i]-24*7):(ind_end[i]+24*7)])
+        elif np.any(~np.isnan(hs2.iloc[(ind_end[i]+24*7):(ind_end[i]+24*7)])) :
+            hs1.iloc[ind_end[i]:] = hs1.iloc[ind_end[i]:] - \
+                np.nanmean(hs1.iloc[ind_end[i]:((ind_end[i]-24*7)+24*7)])  + \
+                    np.nanmean(hs2.iloc[(ind_end[i]+24*7):(ind_end[i]+24*7)])  
         
-    if "SnowHeight2_adj(m)" in df.columns:
-        hs2=df["SnowHeight2_adj(m)"].copy()
-        if np.any(~np.isnan(hs1)):
-            doy = df["DayOfYear"]+df["HourOfDay(UTC)"]/24
-            ind = np.where(doy == 270)[0]
-            for i in ind:
-                span = 50*24
-                hs1_avg = hs1.iloc[i:i+span].mean(skipna=True)
-                hs2_avg = hs2.iloc[i:i+span].mean(skipna=True)
-                if ~np.isnan(hs2_avg + hs1_avg):     
-                    hs2.iloc[i:] = hs2.iloc[i:] - hs2_avg + hs1_avg
-            df["SurfaceHeight2_adj(m)"] = hs2
+        if np.any(~np.isnan(z.iloc[(ind_end[i]-24*7):(ind_end[i]+24*7)])) :
+            hs2.iloc[ind_end[i]:] = hs2.iloc[ind_end[i]:] - \
+                np.nanmean(hs2.iloc[(ind_end[i]-24*7):(ind_end[i]+24*7)])  + \
+                    np.nanmean(z.iloc[(ind_end[i]-24*7):(ind_end[i]+24*7)])
+                   
+        hs1.plot()
+        hs2.plot()
+        plt.axvline(hs1.index[ind_end[i]])
+        # input()
 
+
+                    
+        # # if there is PT data, we adjust the SR2 to the PT-derived height 
+        # # to minimize deviation over the ablation season     
+        # if np.any(~np.isnan(z.iloc[ind_start[i]:ind_end[i]])):
+        #     hs2.iloc[ind_start[i]:] = hs2.iloc[ind_start[i]:] - \
+        #         np.nanmean(hs2.iloc[ind_start[i]:ind_end[i]] - \
+        #             z.iloc[ind_start[i]:ind_end[i]])
+        # else:
+        #     # if there is an ablation season that has been missed by the PT
+        #     # then we need to realign it with the SR2
+        #     ind_first = np.argwhere(~np.isnan(z.values))[0][0]
+        #     if ~np.isnan(np.nanmin(hs2.iloc[:ind_first])):
+        #         z.iloc[ind_end[i]:] = z.iloc[ind_end[i]:] \
+        #             - np.nanmean(z.iloc[ind_first])  + np.nanmin(hs2.iloc[:ind_first])
+        #     elif ~np.isnan(np.nanmin(hs1.iloc[:ind_first])):
+        #         z.iloc[ind_end[i]:] = z.iloc[ind_end[i]:] \
+        #             - np.nanmean(z.iloc[ind_first])  + np.nanmin(hs1.iloc[:ind_first])
+
+    
+    df["SurfaceHeight1_adj(m)"] = hs1.interpolate(limit=7*24).values 
+    df["SurfaceHeight2_adj(m)"] = hs2.interpolate(limit=7*24).values
+    df["DepthPressureTransducer_Cor_adj(m)"] = z.interpolate(limit=7*24).values
+
+    # plt.figure()
+    # smoothed_PT.plot()
+    # df["SurfaceHeight2_adj(m)"].plot()
+    # # plt.axhline(-0.0001)  
+    # for i, y in enumerate(np.unique(years)):
+    #     plt.axvspan(df.index[ind_start[i]],df.index[ind_end[i]], color='orange', alpha=0.1)
+
+    # making a summary of the surface height
+    df["SurfaceHeight_summary(m)"] = np.nan
+   
+    df.loc[ind_accumulation, "SurfaceHeight_summary(m)"] = np.nanmean( df.loc[ind_accumulation,["SurfaceHeight1_adj(m)","SurfaceHeight2_adj(m)"]].values, axis = 1)
+
+    df.loc[ind_ablation, "SurfaceHeight_summary(m)"] = df.loc[ind_ablation,"DepthPressureTransducer_Cor_adj(m)"].interpolate(limit=72).values  
+    
+    # df["SurfaceHeight_summary(m)"]= \
+        # np.nanmax(df[["SurfaceHeight_summary(m)",'DepthPressureTransducer_Cor_adj(m)']].values, axis=1)
+    
+    # plotting result
     f1 = plt.figure(figsize=(10, 8))    
-    if "DepthPressureTransducer_Cor_adj(m)" in df.columns:
-        z=df["DepthPressureTransducer_Cor_adj(m)"].copy()
-        if np.any(~np.isnan(z)):
-            plt.plot(df["time"], z, label = 'Pressure transducer')
-            
-    if "SurfaceHeight1_adj(m)" in df.columns:
-        if np.any(~np.isnan(df["SurfaceHeight1_adj(m)"])):
-            plt.plot(df["time"], df["SurfaceHeight1_adj(m)"], label = 'SonicRanger1')
-            
-    if "SurfaceHeight2_adj(m)" in df.columns:
-        if np.any(~np.isnan(df["SurfaceHeight2_adj(m)"])):
-            plt.plot(df["time"], df["SurfaceHeight2_adj(m)"], label = 'SonicRanger2')
-            
+    df["DepthPressureTransducer_Cor_adj(m)"].plot(label = 'Pressure transducer')
+    df["SurfaceHeight1_adj(m)"].plot(label = 'SonicRanger1')
+    df["SurfaceHeight2_adj(m)"].plot(label = 'SonicRanger2')
+    df["SurfaceHeight_summary(m)"].plot(label = 'Summary',
+             linewidth=2, color = 'tab:red')
+               
     plt.legend(prop={'size': 15})
     plt.xlabel('Year',size=20)
     plt.ylabel('Height (m)',size=20)
     plt.title(site,size=20)
     plt.autoscale(enable=True, axis='x', tight=True)
     plt.grid()
+    for i, y in enumerate(np.unique(years)):
+        plt.axvspan(df.index[ind_start[i]],df.index[ind_end[i]], color='orange', alpha=0.1)
     f1.savefig('figures/'+site+'_surface_height.png',dpi=90, bbox_inches='tight')
     return df

@@ -1,0 +1,4 @@
+t0,t1,variable,flag,comment,URL_graphic
+2009-08-20T00:00:00+00:00,2010-01-31T00:00:00+00:00,SurfaceHeight(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/KPC_L_error_data.png
+2014-07-20T00:00:00+00:00,2015-02-28T00:00:00+00:00,SurfaceHeight(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/KPC_L_error_data.png
+2016-11-01T00:00:00+00:00,2019-07-30T00:00:00+00:00,SurfaceHeight(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/KPC_L_error_data.png

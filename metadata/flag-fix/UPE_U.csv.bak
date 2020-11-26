@@ -1,0 +1,12 @@
+t0,t1,variable,adjust_function,adjust_value,comment,URL_graphic
+2009-08-18T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,-19.1,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/NUK_U_dpt_1.png
+2013-08-06T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,-0.3,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/UPE_U_dpt_1.png
+2015-08-04T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,-5.75,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/UPE_U_dpt_1.png
+2017-08-24T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,-0.15,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/UPE_U_dpt_1.png
+2009-08-19T00:00:00+00:00,,SurfaceHeight(m),add,-0.2,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flag-fix/graphics/UPE_U_hs_2.png
+2011-06-24T00:00:00+00:00,,SurfaceHeight(m),add,-4.5,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flag-fix/graphics/UPE_U_hs_2.png
+2012-08-12T00:00:00+00:00,,SurfaceHeight(m),add,-3.1,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flag-fix/graphics/UPE_U_hs_2.png
+2013-08-07T00:00:00+00:00,,SurfaceHeight(m),add,-1.0,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flag-fix/graphics/UPE_U_hs_2.png
+2014-08-07T00:00:00+00:00,,SurfaceHeight(m),add,-1.2,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flag-fix/graphics/UPE_U_hs_2.png
+2015-08-13T00:00:00+00:00,,SurfaceHeight(m),add,-3.0,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flag-fix/graphics/UPE_U_hs_2.png
+2018-08-01T00:00:00+00:00,,SurfaceHeight(m),add,-3.0,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flag-fix/graphics/UPE_U_hs_2.png

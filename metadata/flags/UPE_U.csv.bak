@@ -1,4 +1,6 @@
 t0,t1,variable,flag,comment,URL_graphic
-2011-09-02T00:00:00+00:00,2011-09-12T00:00:00+00:00,DepthPressureTransducer(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/UPE_U_dpt_1.png
-2012-08-30T00:00:00+00:00,2012-09-11T00:00:00+00:00,DepthPressureTransducer(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/UPE_U_dpt_1.png
-2019-09-07T00:00:00+00:00,2019-09-17T00:00:00+00:00,DepthPressureTransducer(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/UPE_U_dpt_1.png
+2011-06-02T00:00:00+00:00,2011-07-29T00:00:00+00:00,SurfaceHeight(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/UPE_U_dpt_1.png
+2015-06-30T00:00:00+00:00,2015-08-13T00:00:00+00:00,SurfaceHeight(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/UPE_U_dpt_1.png
+2011-09-02T00:00:00+00:00,2011-09-12T00:00:00+00:00,DepthPressureTransducer_Cor(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/UPE_U_dpt_1.png
+2012-09-01T00:00:00+00:00,2012-09-11T00:00:00+00:00,DepthPressureTransducer_Cor(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/UPE_U_dpt_1.png
+2019-09-07T00:00:00+00:00,2019-09-17T00:00:00+00:00,DepthPressureTransducer_Cor(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/UPE_U_dpt_1.png

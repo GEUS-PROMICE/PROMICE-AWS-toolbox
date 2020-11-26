@@ -84,4 +84,66 @@ for site in np.unique(hs_adj.site):
        err_file.loc[site].to_csv('metadata/flag-fix/'+site+'.csv',index=False)
     else: # else it exists so append without writing the header
        err_file.loc[site].to_csv('metadata/flag-fix/'+site+'.csv',index=False, mode='a', header=False)
+   
+#%% Maintenance file
+site
+xl = pd.ExcelFile('metadata/maintenance.xlsx')
+xl.sheet_names  # see all sheet names
+for sheet_name in xl.sheet_names[0:-1]:
+    print(sheet_name)
+    site = sheet_name
+    if site == 'SouthDome':
+        site = 'South Dome'
+    if site == 'SwissCamp':
+        site = 'Swiss Camp'
+        
+    maintenance = xl.parse(sheet_name)
+    maintenance.drop(['T1 before (cm)',
+           'T1 after (cm)', 'T2 before (cm)', 'T2 after (cm)', 'W1 before (cm)',
+           'W1 after (cm)', 'W2 before (cm)', 'W2 after (cm)', 'NewDepth1 (m)',
+           'NewDepth2 (m)', 'NewDepth3 (m)', 'NewDepth4 (m)', 'NewDepth5 (m)',
+           'NewDepth6 (m)', 'NewDepth7 (m)', 'NewDepth8 (m)', 'NewDepth9 (m)',
+           'NewDepth10 (m)'],axis = 1, inplace = True)
     
+    try: 
+        maintenance['t0'] = pd.to_datetime(maintenance['Date (dd-mm-yyyy HH:MM)'],
+                                           format= '%Y-%m-%d %H:%M:%S')
+    except:
+        maintenance['t0'] = pd.to_datetime(maintenance['Date (dd-mm-yyyy HH:MM)'],
+                                           format= '%d-%b-%Y %H:%M:%S')
+    maintenance.set_index('t0',inplace=True,drop=False)
+    maintenance['t1'] = ''
+    
+    tmp1= maintenance[['Date (dd-mm-yyyy HH:MM)', 'reported', 'SR1 before (cm)',
+                       'SR1 after (cm)', 't0', 't1']].copy()
+    tmp1['variable']= 'SnowHeight(m)'
+    tmp2= maintenance[['Date (dd-mm-yyyy HH:MM)', 'reported', 
+                       'SR2 before (cm)', 'SR2 after (cm)', 't0', 't1']].copy()
+    tmp2['variable']= 'SurfaceHeight(m)'
+    tmp2=tmp2.rename(columns={'SR2 before (cm)': 'SR1 before (cm)'})
+    tmp2=tmp2.rename(columns={'SR2 after (cm)': 'SR1 after (cm)'})
+    maintenance = tmp1.append(tmp2)
+    
+    maintenance['adjustement_function'] = 'add'
+    maintenance['adjustement_value'] = (maintenance['SR1 after (cm)']-maintenance['SR1 before (cm)'])/100
+    
+    maintenance['comment'] = ''
+    for i in range(maintenance.shape[0]):
+        if maintenance['reported'][i]=='y':
+            maintenance.iloc[i, maintenance.columns.get_loc("comment")] = 'Reported visit. SR1 height before/after (m): '+ \
+            str(maintenance['SR1 before (cm)'][i]/100)+'/'+str(maintenance['SR1 after (cm)'][i]/100)
+        else:
+            maintenance.iloc[i, maintenance.columns.get_loc("comment")] = 'Not reported. Manual shift suggested by bav.'
+            
+    maintenance.drop(['Date (dd-mm-yyyy HH:MM)', 'reported', 'SR1 before (cm)',
+           'SR1 after (cm)'],axis = 1,inplace=True)
+    
+    maintenance=maintenance.loc[~np.isnan(maintenance['adjustement_value']).values,:]
+    maintenance=maintenance.loc[~(maintenance['adjustement_value'].values==0),:]
+    maintenance['t0'] = [t.tz_localize('UTC').isoformat() for t in maintenance['t0']]
+                       
+    if not os.path.isfile('metadata/flag-fix/'+site+'.csv'):
+       maintenance.to_csv('metadata/flag-fix/'+site+'.csv',index=False)
+    else: # else it exists so append without writing the header
+       maintenance.to_csv('metadata/flag-fix/'+site+'.csv',index=False, mode='a', header=False)
+        
