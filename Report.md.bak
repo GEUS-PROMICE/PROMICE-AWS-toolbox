@@ -1,17 +1,56 @@
-#EGP
-##Removing erroneous data at EGP
+# EGP
+## Removing erroneous data at EGP
 No erroneous data listed for EGP
-##Adjusting data at EGP
-###Adjusting SnowHeight(m)
+## Adjusting data at EGP
+### Adjusting SnowHeight(m)
 2017-05-18T00:00:00+00:00 add 0.5
 2018-05-30T00:00:00+00:00 add 0.6
 2019-05-31T00:00:00+00:00 add 0.4
-[Adjusted data at EGP](figures/EGP_adj_SnowHeight(m).jpeg)
-###Adjusting SurfaceHeight(m)
+![Adjusted data at EGP](figures/EGP_adj_SnowHeight(m).jpeg)
+### Adjusting SurfaceHeight(m)
 2019-06-01T00:00:00+00:00 add 0.18
-[Adjusted data at EGP](figures/EGP_adj_SurfaceHeight(m).jpeg)
-#KAN_B
-##Removing erroneous data at KAN_B
+![Adjusted data at EGP](figures/EGP_adj_SurfaceHeight(m).jpeg)
+# KAN_B
+## Removing erroneous data at KAN_B
 No erroneous data listed for KAN_B
-##Adjusting data at KAN_B
-No erroneous data listed for KAN_B
+## Adjusting data at KAN_B
+No data to fix for KAN_B
+# KAN_L
+## Removing erroneous data at KAN_L
+Deleting flagged data:
+2009-09-17 00:00:00+00:00 2009-10-07 00:00:00+00:00 DepthPressureTransducer_Cor(m)
+2010-10-02 00:00:00+00:00 2010-10-12 00:00:00+00:00 DepthPressureTransducer_Cor(m)
+2012-10-06 00:00:00+00:00 2012-10-26 00:00:00+00:00 DepthPressureTransducer_Cor(m)
+2014-10-08 00:00:00+00:00 2014-11-16 00:00:00+00:00 DepthPressureTransducer_Cor(m)
+2019-10-07 00:00:00+00:00 2019-10-27 00:00:00+00:00 DepthPressureTransducer_Cor(m)
+![Erroneous data at KAN_L](figures/KAN_L_DepthPressureTransducer_Corm_data_removed.png)
+2008-01-01 00:00:00+00:00 2020-01-01 00:00:00+00:00 SnowHeight(m)
+![Erroneous data at KAN_L](figures/KAN_L_SnowHeightm_data_removed.png)
+2009-08-20 00:00:00+00:00 2010-06-01 00:00:00+00:00 SurfaceHeight(m)
+2011-11-01 00:00:00+00:00 2012-02-01 00:00:00+00:00 SurfaceHeight(m)
+2014-06-20 00:00:00+00:00 2014-08-15 00:00:00+00:00 SurfaceHeight(m)
+2016-01-01 00:00:00+00:00 2016-08-15 00:00:00+00:00 SurfaceHeight(m)
+![Erroneous data at KAN_L](figures/KAN_L_SurfaceHeightm_data_removed.png)
+## Adjusting data at KAN_L
+### Adjusting DepthPressureTransducer_Cor(m)
+2010-10-07T00:00:00+00:00 add -0.1
+2011-06-04T00:00:00+00:00 add -4.0
+2012-08-21T00:00:00+00:00 add -11.7
+2014-05-13T00:00:00+00:00 add 0.07
+2015-04-29T00:00:00+00:00 add -7.08
+2015-07-07T00:00:00+00:00 add -0.4
+2016-07-16T00:00:00+00:00 add -1.6
+2017-09-01T00:00:00+00:00 add -3.5
+2018-08-29T00:00:00+00:00 add -11.3
+2019-09-05T00:00:00+00:00 add 6.5
+![Adjusted data at KAN_L](figures/KAN_L_adj_DepthPressureTransducer_Cor(m).jpeg)
+### Adjusting SurfaceHeight(m)
+2011-06-03T00:00:00+00:00 add -3.0
+2013-09-15T00:00:00+00:00 add -2.2
+2014-07-15T00:00:00+00:00 add -4.0
+2015-09-15T00:00:00+00:00 add -2.0
+2019-09-05T00:00:00+00:00 add -5.0
+![Adjusted data at KAN_L](figures/KAN_L_adj_SurfaceHeight(m).jpeg)
+m).jpeg)
+[4;33mReloaded modules[24m: PROMICE_lib[0m
+figures and output folders already exist

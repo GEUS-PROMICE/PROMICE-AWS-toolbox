@@ -124,10 +124,11 @@ def remove_flagged_data(df, site, var_list = ['all'], plot = True):
         if plot:
             fig = plt.figure(figsize = (15,10))
             df[var].plot(color = 'red',label='bad data')
-            
+        print('|start time|end time|variable|')
+        print('|-|-|-|')
         for t0, t1 in zip(pd.to_datetime(flag_data.loc[flag_data.variable==var_save].t0), 
                                pd.to_datetime(flag_data.loc[flag_data.variable==var_save].t1)):
-            print(t0, t1, var)
+            print('|'+str(t0) +'|'+ str(t1)+'|'+var+'|')
             df_out.loc[t0:t1, var] = np.NaN
             
         if plot:
@@ -163,11 +164,14 @@ def adjust_data(df, site):
             continue
         else:
             print('### Adjusting '+var)
+        print('|start time|end time|operation|value|')
+        print('|-|-|-|-|')
         for t0, t1, func, val in zip(adj_info.loc[var].t0,
                                      adj_info.loc[var].t1,
                                      adj_info.loc[var].adjust_function,
                                      adj_info.loc[var].adjust_value):
-            print(t0,func,val)
+            
+            print('|'+str(t0)+'|'+str(t1)+'|'+func+'|'+str(val)+'|')
             if np.isnan(t1):
                 t1 = df_out.time[-1].isoformat()
             if func == 'add': 

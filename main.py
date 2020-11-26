@@ -16,23 +16,23 @@ try:
 except:
     print('figures and output folders already exist')
 
-# sys.stdout = open("Report.md", "w")
-class Logger(object):
-    def __init__(self):
-        self.terminal = sys.stdout
-        self.log = open("Report.md", "a")
+sys.stdout = open("Report.md", "w")
+# class Logger(object):
+#     def __init__(self):
+#         self.terminal = sys.stdout
+#         self.log = open("Report.md", "a")
 
-    def write(self, message):
-        self.terminal.write(message)
-        self.log.write(message)  
+#     def write(self, message):
+#         self.terminal.write(message)
+#         self.log.write(message)  
 
-    def flush(self):
-        #this flush method is needed for python 3 compatibility.
-        #this handles the flush command by doing nothing.
-        #you might want to specify some extra behavior here.
-        pass    
+#     def flush(self):
+#         #this flush method is needed for python 3 compatibility.
+#         #this handles the flush command by doing nothing.
+#         #you might want to specify some extra behavior here.
+#         pass    
 
-sys.stdout = Logger()
+# sys.stdout = Logger()
 
 path_to_PROMICE = 'C:/Users/bav/OneDrive - Geological survey of Denmark and Greenland/Code/AWS_Processing/Input/PROMICE/'
 
