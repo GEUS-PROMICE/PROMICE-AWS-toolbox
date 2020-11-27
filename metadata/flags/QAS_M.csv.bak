@@ -1,5 +1,5 @@
 t0,t1,variable,flag,comment,URL_graphic
 2017-07-19T00:00:00+00:00,2017-08-08T00:00:00+00:00,DepthPressureTransducer_Cor(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/QAS_M_dpt_1.png
 2017-11-11T00:00:00+00:00,2017-12-06T00:00:00+00:00,DepthPressureTransducer_Cor(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/QAS_M_dpt_1.png
-2017-12-15T00:00:00+00:00,2018-02-15T00:00:00+00:00,SurfaceHeight(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/QAS_M_dpt_1.png
-2019-07-01T00:00:00+00:00,2019-12-06T00:00:00+00:00,SurfaceHeight(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/QAS_M_dpt_1.png
+2017-12-15T00:00:00+00:00,2018-01-15T00:00:00+00:00,SurfaceHeight(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/QAS_M_dpt_1.png
+2019-07-01T00:00:00+00:00,2017-12-06T00:00:00+00:00,SurfaceHeight(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/QAS_M_dpt_1.png

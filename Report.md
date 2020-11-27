@@ -46,7 +46,9 @@ Deleting flagged data:
  
 |start time|end time|variable|
 |-|-|-|
-|2008-01-01 00:00:00+00:00|2020-01-01 00:00:00+00:00|SnowHeight(m)|
+|2008-01-01 00:00:00+00:00|2009-09-01 00:00:00+00:00|SnowHeight(m)|
+|2012-01-01 00:00:00+00:00|2016-09-01 00:00:00+00:00|SnowHeight(m)|
+|2017-09-01 00:00:00+00:00|2020-09-01 00:00:00+00:00|SnowHeight(m)|
  
 ![Erroneous data at KAN_L](figures/KAN_L_SnowHeightm_data_removed.png)
  
@@ -191,7 +193,8 @@ Deleting flagged data:
 ### Adjusting DepthPressureTransducer_Cor(m)
 |start time|end time|operation|value|
 |-|-|-|-|
-|2016-07-27T00:00:00+00:00|nan|add|-6.2970000000000015|
+|2010-01-01T00:00:00+00:00|nan|add|-6.0|
+|2016-07-27T00:00:00+00:00|nan|add|-6.297000000000001|
 |2016-07-29T00:00:00+00:00|nan|add|-0.1|
 |2019-07-11T00:00:00+00:00|nan|add|-4.478|
  
@@ -216,13 +219,6 @@ Deleting flagged data:
 ![Erroneous data at KPC_U](figures/KPC_U_DepthPressureTransducer_Corm_data_removed.png)
  
 ## Adjusting data at KPC_U
-### Adjusting DepthPressureTransducer_Cor(m)
-|start time|end time|operation|value|
-|-|-|-|-|
-|2012-07-27T00:00:00+00:00|nan|add|5.0|
- 
-![Adjusted data at KPC_U](figures/KPC_U_adj_DepthPressureTransducer_Cor(m).jpeg)
- 
 ### Adjusting SnowHeight(m)
 |start time|end time|operation|value|
 |-|-|-|-|
@@ -418,7 +414,7 @@ No erroneous data listed for NUK_L
 |2014-07-26T00:00:00+00:00|nan|add|-3.35|
 |2017-04-27T00:00:00+00:00|nan|add|-14.92|
 |2017-05-22T00:00:00+00:00|nan|add|-0.5|
-|2018-02-28T00:00:00+00:00|nan|add|-14.75|
+|2018-02-28T00:00:00+00:00|nan|add|-18.0|
 |2018-07-16T00:00:00+00:00|nan|add|7.35|
 |2018-08-01T00:00:00+00:00|nan|add|-2.7|
  
@@ -458,7 +454,6 @@ Deleting flagged data:
 ### Adjusting DepthPressureTransducer_Cor(m)
 |start time|end time|operation|value|
 |-|-|-|-|
-|2009-08-18T00:00:00+00:00|nan|add|-19.1|
 |2010-07-23T00:00:00+00:00|nan|add|-2.6|
 |2010-07-24T00:00:00+00:00|nan|add|-8.8|
 |2011-08-24T00:00:00+00:00|nan|add|-2.0|
@@ -549,6 +544,13 @@ Deleting flagged data:
  
 ![Erroneous data at QAS_M](figures/QAS_M_DepthPressureTransducer_Corm_data_removed.png)
  
+|start time|end time|variable|
+|-|-|-|
+|2017-12-15 00:00:00+00:00|2018-02-15 00:00:00+00:00|SurfaceHeight(m)|
+|2019-07-01 00:00:00+00:00|2019-12-06 00:00:00+00:00|SurfaceHeight(m)|
+ 
+![Erroneous data at QAS_M](figures/QAS_M_SurfaceHeightm_data_removed.png)
+ 
 ## Adjusting data at QAS_M
 ### Adjusting DepthPressureTransducer_Cor(m)
 |start time|end time|operation|value|
@@ -574,7 +576,7 @@ Deleting flagged data:
 Deleting flagged data:
 |start time|end time|variable|
 |-|-|-|
-|2008-10-15 00:00:00+00:00|2009-02-04 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
+|2008-10-15 00:00:00+00:00|2010-01-01 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
 |2010-10-19 00:00:00+00:00|2010-10-22 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
 |2016-08-10 00:00:00+00:00|2017-05-20 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
  
@@ -588,14 +590,6 @@ Deleting flagged data:
 |2019-08-31T00:00:00+00:00|nan|add|4.2|
  
 ![Adjusted data at QAS_U](figures/QAS_U_adj_DepthPressureTransducer_Cor(m).jpeg)
- 
-### Adjusting SnowHeight(m)
-|start time|end time|operation|value|
-|-|-|-|-|
-|2012-08-17T00:00:00+00:00|nan|add|1.0|
-|2015-08-23T00:00:00+00:00|nan|add|1.0|
- 
-![Adjusted data at QAS_U](figures/QAS_U_adj_SnowHeight(m).jpeg)
  
 ### Adjusting SurfaceHeight(m)
 |start time|end time|operation|value|
@@ -703,8 +697,7 @@ Deleting flagged data:
 |start time|end time|variable|
 |-|-|-|
 |2017-10-07 00:00:00+00:00|2017-11-26 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
-|2017-11-24 00:00:00+00:00|2018-06-14 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
-|2018-08-23 00:00:00+00:00|2018-09-02 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
+|2017-11-24 00:00:00+00:00|2018-10-14 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
  
 ![Erroneous data at TAS_A](figures/TAS_A_DepthPressureTransducer_Corm_data_removed.png)
  
@@ -744,6 +737,7 @@ Deleting flagged data:
 |2012-01-30 00:00:00+00:00|2012-03-10 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
 |2012-09-05 00:00:00+00:00|2014-07-30 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
 |2016-11-12 00:00:00+00:00|2017-07-27 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
+|2015-09-01 00:00:00+00:00|2016-06-15 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
  
 ![Erroneous data at TAS_L](figures/TAS_L_DepthPressureTransducer_Corm_data_removed.png)
  
@@ -751,10 +745,10 @@ Deleting flagged data:
 ### Adjusting DepthPressureTransducer_Cor(m)
 |start time|end time|operation|value|
 |-|-|-|-|
-|2012-09-08T00:00:00+00:00|nan|add|-2.86|
-|2013-04-18T00:00:00+00:00|nan|add|-3.0|
-|2014-08-03T00:00:00+00:00|nan|add|-12.4|
-|2017-07-28T00:00:00+00:00|nan|add|-10.36|
+|2014-08-03T00:00:00+00:00|nan|add|-5.0|
+|2015-01-03T00:00:00+00:00|nan|add|-3.0|
+|2016-01-03T00:00:00+00:00|nan|add|-3.0|
+|2017-07-28T00:00:00+00:00|nan|add|-3.36|
 |2018-09-29T00:00:00+00:00|nan|add|1.29|
 |2019-05-01T00:00:00+00:00|nan|add|-1.135|
  
@@ -777,29 +771,7 @@ Deleting flagged data:
 # THU_L
 ## Removing erroneous data at THU_L
 Deleting flagged data:
-|start time|end time|variable|
-|-|-|-|
-|2007-01-30 00:00:00+00:00|2017-07-01 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
- 
-![Erroneous data at THU_L](figures/THU_L_DepthPressureTransducer_Corm_data_removed.png)
- 
-|start time|end time|variable|
-|-|-|-|
-|2010-01-30 00:00:00+00:00|2010-09-05 00:00:00+00:00|SnowHeight(m)|
- 
-![Erroneous data at THU_L](figures/THU_L_SnowHeightm_data_removed.png)
- 
 ## Adjusting data at THU_L
-### Adjusting DepthPressureTransducer_Cor(m)
-|start time|end time|operation|value|
-|-|-|-|-|
-|2014-09-13T00:00:00+00:00|nan|add|-3.0|
-|2015-07-01T00:00:00+00:00|nan|add|-0.3|
-|2015-09-17T00:00:00+00:00|nan|add|-0.2|
-|2016-07-22T00:00:00+00:00|nan|add|-0.2|
- 
-![Adjusted data at THU_L](figures/THU_L_adj_DepthPressureTransducer_Cor(m).jpeg)
- 
 ## Summarizing surface height at THU_L
  
 ![Surface height adjustement at THU_L](figures/THU_L_surface_height.png)
@@ -827,14 +799,6 @@ Deleting flagged data:
 ![Erroneous data at THU_U](figures/THU_U_SurfaceHeightm_data_removed.png)
  
 ## Adjusting data at THU_U
-### Adjusting DepthPressureTransducer_Cor(m)
-|start time|end time|operation|value|
-|-|-|-|-|
-|2014-09-15T00:00:00+00:00|nan|add|0.85|
-|2016-07-22T00:00:00+00:00|nan|add|2.5|
- 
-![Adjusted data at THU_U](figures/THU_U_adj_DepthPressureTransducer_Cor(m).jpeg)
- 
 ## Summarizing surface height at THU_U
  
 ![Surface height adjustement at THU_U](figures/THU_U_surface_height.png)
@@ -852,6 +816,12 @@ Deleting flagged data:
  
 ![Erroneous data at UPE_L](figures/UPE_L_DepthPressureTransducer_Corm_data_removed.png)
  
+|start time|end time|variable|
+|-|-|-|
+|2016-09-07 00:00:00+00:00|2017-01-17 00:00:00+00:00|SurfaceHeight(m)|
+ 
+![Erroneous data at UPE_L](figures/UPE_L_SurfaceHeightm_data_removed.png)
+ 
 ## Adjusting data at UPE_L
 ### Adjusting DepthPressureTransducer_Cor(m)
 |start time|end time|operation|value|
@@ -862,13 +832,6 @@ Deleting flagged data:
  
 ![Adjusted data at UPE_L](figures/UPE_L_adj_DepthPressureTransducer_Cor(m).jpeg)
  
-### Adjusting SnowHeight(m)
-|start time|end time|operation|value|
-|-|-|-|-|
-|2018-08-08T00:00:00+00:00|nan|add|-2.0|
- 
-![Adjusted data at UPE_L](figures/UPE_L_adj_SnowHeight(m).jpeg)
- 
 ### Adjusting SurfaceHeight(m)
 |start time|end time|operation|value|
 |-|-|-|-|
@@ -876,6 +839,7 @@ Deleting flagged data:
 |2013-08-03T00:00:00+00:00|nan|add|-1.7|
 |2015-08-03T00:00:00+00:00|nan|add|-3.5|
 |2016-01-01T00:00:00+00:00|nan|add|1.3|
+|2017-01-01T00:00:00+00:00|nan|add|-1.5|
 |2017-08-26T00:00:00+00:00|nan|add|-1.3|
  
 ![Adjusted data at UPE_L](figures/UPE_L_adj_SurfaceHeight(m).jpeg)

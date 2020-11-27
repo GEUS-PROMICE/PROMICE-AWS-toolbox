@@ -95,4 +95,4 @@ for ws in PROMICE_stations:
     
 %run tocgen.py Report.md Report_toc.md
 
-sys.stdout.close()
+# sys.stdout.close()

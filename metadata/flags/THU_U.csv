@@ -2,4 +2,3 @@ t0,t1,variable,flag,comment,URL_graphic
 2010-01-30T00:00:00+00:00,2010-09-05T00:00:00+00:00,SnowHeight(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/TAS_L_dpt_1.png
 2012-08-16T00:00:00+00:00,2013-08-10T00:00:00+00:00,SurfaceHeight(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/TAS_L_dpt_1.png
 2018-09-13T00:00:00+00:00,2019-05-13T00:00:00+00:00,SurfaceHeight(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/TAS_L_dpt_1.png
-2010-09-13T00:00:00+00:00,2017-08-02T00:00:00+00:00,DepthPressureTransducer_Cor(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/TAS_L_dpt_1.png

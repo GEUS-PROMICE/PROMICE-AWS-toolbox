@@ -1,7 +1,8 @@
 t0,t1,variable,adjust_function,adjust_value,comment,URL_graphic
-2012-09-08T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,-2.86,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/TAS_L_dpt_1.png
-2014-08-03T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,-12.4,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/TAS_L_dpt_1.png
-2017-07-28T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,-10.36,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/TAS_L_dpt_1.png
+2014-08-03T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,-10,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/TAS_L_dpt_1.png
+2015-01-03T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,-3,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/TAS_L_dpt_1.png
+2016-01-03T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,-3,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/TAS_L_dpt_1.png
+2017-07-28T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,-3.36,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/TAS_L_dpt_1.png
 2018-09-29T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,1.29,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/TAS_L_dpt_1.png
 2019-05-01T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,-1.135,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/TAS_L_dpt_1.png
 2011-08-12T00:00:00+00:00,,SurfaceHeight(m),add,-3.0,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flag-fix/graphics/TAS_L_hs_2.png
