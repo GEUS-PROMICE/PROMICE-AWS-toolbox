@@ -301,6 +301,22 @@ def combine_hs_dpt(df, site):
     hs2=df["SurfaceHeight_adj(m)"].interpolate(limit=24*14).copy()
     z=df["DepthPressureTransducer_Cor_adj(m)"].copy()
 
+    from sklearn.linear_model import LinearRegression
+    
+    if np.any(~np.isnan(z)):
+        Y = z.iloc[:].values.reshape(-1, 1)
+        X = z.iloc[~np.isnan(Y)].index.astype(np.int64).values.reshape(-1, 1) 
+        Y = Y[~np.isnan(Y)] 
+        linear_regressor = LinearRegression()  # create object for the class
+        linear_regressor.fit(X, Y)  # perform linear regression
+        Y_pred = linear_regressor.predict(z.index.astype(np.int64).values.reshape(-1, 1) )
+        plt.figure()
+        plt.scatter(X, Y)
+        plt.plot(z.index.astype(np.int64).values, Y_pred, color='red')
+        plt.title('Removing intercept at '+site)
+        plt.show()
+        z = z-Y_pred[0]
+    
     years = df.index.year.values
     ind_start = years.astype(int)
     ind_end =  years.astype(int)
@@ -373,8 +389,6 @@ def combine_hs_dpt(df, site):
         plt.axvline(hs1.index[ind_end[i]])
         # input()
 
-
-                    
         # # if there is PT data, we adjust the SR2 to the PT-derived height 
         # # to minimize deviation over the ablation season     
         # if np.any(~np.isnan(z.iloc[ind_start[i]:ind_end[i]])):
@@ -391,18 +405,10 @@ def combine_hs_dpt(df, site):
         #     elif ~np.isnan(np.nanmin(hs1.iloc[:ind_first])):
         #         z.iloc[ind_end[i]:] = z.iloc[ind_end[i]:] \
         #             - np.nanmean(z.iloc[ind_first])  + np.nanmin(hs1.iloc[:ind_first])
-
     
     df["SurfaceHeight1_adj(m)"] = hs1.interpolate(limit=7*24).values 
-    df["SurfaceHeight2_adj(m)"] = hs2.interpolate(limit=7*24).values
+    df["SurfaceHeight2_adj(m)"] = hs2.interpolate(limit=7*24).values   
     df["DepthPressureTransducer_Cor_adj(m)"] = z.interpolate(limit=7*24).values
-
-    # plt.figure()
-    # smoothed_PT.plot()
-    # df["SurfaceHeight2_adj(m)"].plot()
-    # # plt.axhline(-0.0001)  
-    # for i, y in enumerate(np.unique(years)):
-    #     plt.axvspan(df.index[ind_start[i]],df.index[ind_end[i]], color='orange', alpha=0.1)
 
     # making a summary of the surface height
     df["SurfaceHeight_summary(m)"] = np.nan
@@ -411,16 +417,13 @@ def combine_hs_dpt(df, site):
 
     df.loc[ind_ablation, "SurfaceHeight_summary(m)"] = df.loc[ind_ablation,"DepthPressureTransducer_Cor_adj(m)"].interpolate(limit=72).values  
     
-    # df["SurfaceHeight_summary(m)"]= \
-        # np.nanmax(df[["SurfaceHeight_summary(m)",'DepthPressureTransducer_Cor_adj(m)']].values, axis=1)
-    
     # plotting result
     f1 = plt.figure(figsize=(10, 8))    
     df["DepthPressureTransducer_Cor_adj(m)"].plot(label = 'Pressure transducer')
     df["SurfaceHeight1_adj(m)"].plot(label = 'SonicRanger1')
     df["SurfaceHeight2_adj(m)"].plot(label = 'SonicRanger2')
     df["SurfaceHeight_summary(m)"].plot(label = 'Summary',
-             linewidth=2, color = 'tab:red')
+             linestyle='--', linewidth=2, color = 'tab:red')
                
     plt.legend(prop={'size': 15})
     plt.xlabel('Year',size=20)
