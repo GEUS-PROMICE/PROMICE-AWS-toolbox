@@ -123,7 +123,7 @@ def remove_flagged_data(df, site, var_list = ['all'], plot = True):
             
         if plot:
             fig = plt.figure(figsize = (15,10))
-            df[var].plot(color = 'red',label='bad data')
+            df[var].plot(style='o', label='bad data')
         print('|start time|end time|variable|')
         print('|-|-|-|')
         for t0, t1 in zip(pd.to_datetime(flag_data.loc[flag_data.variable==var_save].t0), 
@@ -132,7 +132,7 @@ def remove_flagged_data(df, site, var_list = ['all'], plot = True):
             df_out.loc[t0:t1, var] = np.NaN
             
         if plot:
-            df_out[var].plot(label='good data',color='green' )
+            df_out[var].plot(style='o', label='good data')
             plt.title(site)
             plt.xlabel('Year')
             plt.ylabel(var)
@@ -180,8 +180,8 @@ def adjust_data(df, site):
                 df_out.loc[t0:t1,var] = df_out.loc[t0:t1,var].values + val
                 
         fig = plt.figure(figsize=(10,5))
-        df[var].plot(label='before adjustment')
-        df_out[var].plot(label='after adjustment')  
+        df[var].plot(style='o',label='before adjustment')
+        df_out[var].plot(style='o',label='after adjustment')  
         [plt.axvline(t,linestyle='--',color = 'red') for t in adj_info.loc[var].t0.values]
         plt.axvline(np.nan,linestyle='--', color = 'red', label='Adjustment times') 
         plt.xlabel('Year')
@@ -252,7 +252,6 @@ def smooth(x,window_len=14,window='hanning'):
 
     return y[int(window_len/2-1):-int(window_len/2)]
 
-#%% 
 
 def hampel(vals_orig, k=7*24, t0=3):
     '''
@@ -316,7 +315,7 @@ def combine_hs_dpt(df, site):
         plt.title('Removing intercept at '+site)
         plt.show()
         z = z-Y_pred[0]
-    
+
     years = df.index.year.values
     ind_start = years.astype(int)
     ind_end =  years.astype(int)
@@ -330,18 +329,20 @@ def combine_hs_dpt(df, site):
             ind_start[i] = np.argwhere(ind_abl_yr)[0][0]
             ind_end[i] = np.argwhere(ind_abl_yr)[-1]
             hs1.iloc[ind_start[i]:ind_end[i]] = np.nan
-            # during the ablation we can delete the data from SR1 unless there is no other sensor
-        # elif np.any(np.isin(df.index[ind_yr].month.values, [6, 7, 8])):
-        #     # if there is any data from june-august that year
-        #     # then use first and last day of JJA as ablation season
-        #     ind_abl_yr = np.logical_and(ind_yr, np.isin(df.index.month.values, [6, 7, 8]))
-        #     ind_start[i] = np.argwhere(ind_abl_yr)[0][0]
-        #     ind_end[i] = np.argwhere(ind_abl_yr)[-1]
-        # else:
-        #     # otherwise left as nan
-        #     ind_start[i] = -999
-        #     ind_end[i] = -999
-        #     continue
+           # during the ablation we can delete the data from SR1 unless there is no other sensor
+        elif np.any(np.isin(df.index[ind_yr].month.values, [6, 7, 8])):
+            # if there is any data from june-august that year
+            # then use first and last day of JJA as ablation season
+            ind_abl_yr = np.logical_and(ind_yr, np.isin(df.index.month.values, [6, 7, 8]))
+            ind_start[i] = np.argwhere(ind_abl_yr)[0][0]
+            ind_end[i] = np.argwhere(ind_abl_yr)[-1]
+            ind_ablation[ind_start[i]:ind_end[i]] = True
+            ind_accumulation[ind_start[i]:ind_end[i]] = False
+        else:
+            # otherwise left as nan
+            ind_start[i] = -999
+            ind_end[i] = -999
+            continue
     plt.figure()
     df['SnowHeight(m)'].plot(color='darkgray',label='')
     df['SnowHeight_adj(m)'].plot(label='SnowHeight(m)')
@@ -349,6 +350,7 @@ def combine_hs_dpt(df, site):
     df['SurfaceHeight_adj(m)'].plot(label='SurfaceHeight(m)')
     df['DepthPressureTransducer_Cor(m)'].plot(color='darkgray',label='')
     df['DepthPressureTransducer_Cor_adj(m)'].plot(label='DepthPressureTransducer_Cor(m)')
+    
     plt.legend()  
     plt.title(site)
     for i, y in enumerate(np.unique(years)):
@@ -363,58 +365,72 @@ def combine_hs_dpt(df, site):
         # if np.any(~np.isnan(hs1.iloc[ind_start[i]:ind_end[i]])) or np.any(~np.isnan(z.iloc[ind_start[i]:ind_end[i]])):
         #     hs1.iloc[ind_start[i]:ind_end[i]] = np.nan
     hs2 = hs2 - firstNonNan(hs2.values)
+    
     plt.figure()
     z.plot()  
     hs1.plot()  
     plt.title(site)
+    
     # adjusting hs1 at the end of each ablation period
+    flag = 0
     for i, y in enumerate(np.unique(years)):
+        # import pdb; pdb.set_trace()
         # and adjust the end of ablation SR1 height to the PT-derived height         
         if np.any(~np.isnan(z.iloc[(ind_end[i]-24*7):(ind_end[i]+24*7)])) :
+            
+            #if it is not the first year and that no adjustment has been done
+            if i > 0 and flag == 0:
+                # then we adjust the pressur transducer to SR2
+                ind_first_nonan = z.index.get_loc(z.iloc[ind_start[i]:].first_valid_index())
+                z = z - np.nanmean(z.iloc[ind_first_nonan:(ind_first_nonan+24*7)])  + \
+                    np.nanmean(hs2.iloc[ind_first_nonan:(ind_first_nonan+24*7)])
+                flag = 1
+            if i == 0:
+                flag = 1
+                
             hs1.iloc[ind_end[i]:] = hs1.iloc[ind_end[i]:] - \
                 np.nanmean(hs1.iloc[(ind_end[i]-24*7):(ind_end[i]+24*7)])  + \
                     np.nanmean(z.iloc[(ind_end[i]-24*7):(ind_end[i]+24*7)])
-        elif np.any(~np.isnan(hs2.iloc[(ind_end[i]+24*7):(ind_end[i]+24*7)])) :
+                    
+        # and adjust the end of ablation SR1 height to the SR2 height         
+        elif np.any(~np.isnan(hs2.iloc[ind_end[i]:(ind_end[i]+24*7)])) :
+            
+            #if it is not the first year and that no adjustment has been done
+            if i > 0 and flag == 0:
+                # then we adjust the pressur SR2 to transducer
+                ind_first_nonan = hs2.index.get_loc(hs2.iloc[ind_start[i]:].first_valid_index())
+                hs2 = hs2 - np.nanmean(hs2.iloc[ind_first_nonan:(ind_first_nonan+24*7)])  + \
+                    np.nanmean(z.iloc[ind_first_nonan:(ind_first_nonan+24*7)])
+                flag = 1
+            if i == 0:
+                flag = 1
             hs1.iloc[ind_end[i]:] = hs1.iloc[ind_end[i]:] - \
-                np.nanmean(hs1.iloc[ind_end[i]:((ind_end[i]-24*7)+24*7)])  + \
-                    np.nanmean(hs2.iloc[(ind_end[i]+24*7):(ind_end[i]+24*7)])  
+                np.nanmean(hs1.iloc[ind_end[i]:(ind_end[i]+24*7)])  + \
+                    np.nanmean(hs2.iloc[ind_end[i]:(ind_end[i]+24*7)])  
         
         if np.any(~np.isnan(z.iloc[(ind_end[i]-24*7):(ind_end[i]+24*7)])) :
-            hs2.iloc[ind_end[i]:] = hs2.iloc[ind_end[i]:] - \
+            hs2.iloc[ind_start[i]:] = hs2.iloc[ind_start[i]:] - \
                 np.nanmean(hs2.iloc[(ind_end[i]-24*7):(ind_end[i]+24*7)])  + \
                     np.nanmean(z.iloc[(ind_end[i]-24*7):(ind_end[i]+24*7)])
                    
         hs1.plot()
         hs2.plot()
         plt.axvline(hs1.index[ind_end[i]])
-        # input()
-
-        # # if there is PT data, we adjust the SR2 to the PT-derived height 
-        # # to minimize deviation over the ablation season     
-        # if np.any(~np.isnan(z.iloc[ind_start[i]:ind_end[i]])):
-        #     hs2.iloc[ind_start[i]:] = hs2.iloc[ind_start[i]:] - \
-        #         np.nanmean(hs2.iloc[ind_start[i]:ind_end[i]] - \
-        #             z.iloc[ind_start[i]:ind_end[i]])
-        # else:
-        #     # if there is an ablation season that has been missed by the PT
-        #     # then we need to realign it with the SR2
-        #     ind_first = np.argwhere(~np.isnan(z.values))[0][0]
-        #     if ~np.isnan(np.nanmin(hs2.iloc[:ind_first])):
-        #         z.iloc[ind_end[i]:] = z.iloc[ind_end[i]:] \
-        #             - np.nanmean(z.iloc[ind_first])  + np.nanmin(hs2.iloc[:ind_first])
-        #     elif ~np.isnan(np.nanmin(hs1.iloc[:ind_first])):
-        #         z.iloc[ind_end[i]:] = z.iloc[ind_end[i]:] \
-        #             - np.nanmean(z.iloc[ind_first])  + np.nanmin(hs1.iloc[:ind_first])
-    
-    df["SurfaceHeight1_adj(m)"] = hs1.interpolate(limit=7*24).values 
-    df["SurfaceHeight2_adj(m)"] = hs2.interpolate(limit=7*24).values   
+        
+    df["SurfaceHeight1_adj(m)"] = hs1.interpolate(limit=7*24).values
+    df["SurfaceHeight2_adj(m)"] = hs2.interpolate(limit=7*24).values
     df["DepthPressureTransducer_Cor_adj(m)"] = z.interpolate(limit=7*24).values
 
     # making a summary of the surface height
     df["SurfaceHeight_summary(m)"] = np.nan
    
+    # in winter, both SR1 and SR2 are used
     df.loc[ind_accumulation, "SurfaceHeight_summary(m)"] = np.nanmean( df.loc[ind_accumulation,["SurfaceHeight1_adj(m)","SurfaceHeight2_adj(m)"]].values, axis = 1)
+    
+    # in ablation season we use SR2 instead of the SR1&2 average
+    df.loc[ind_ablation, "SurfaceHeight_summary(m)"] = df.loc[ind_ablation,"SurfaceHeight2_adj(m)"].interpolate(limit=72).values  
 
+    # in ablation season we use pressure transducer over all other options
     df.loc[ind_ablation, "SurfaceHeight_summary(m)"] = df.loc[ind_ablation,"DepthPressureTransducer_Cor_adj(m)"].interpolate(limit=72).values  
     
     # plotting result
@@ -429,7 +445,6 @@ def combine_hs_dpt(df, site):
     plt.xlabel('Year',size=20)
     plt.ylabel('Height (m)',size=20)
     plt.title(site,size=20)
-    plt.autoscale(enable=True, axis='x', tight=True)
     plt.grid()
     for i, y in enumerate(np.unique(years)):
         plt.axvspan(df.index[ind_start[i]],df.index[ind_end[i]], color='orange', alpha=0.1)

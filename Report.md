@@ -894,3 +894,13 @@ Deleting flagged data:
  
 ![Surface height adjustement at UPE_U](figures/UPE_U_surface_height.png)
  
+[4;33mReloaded modules[24m: PROMICE_lib[0m
+2017-07-26
+2017-07-27
+2017-07-28
+2017-07-29
+2017-07-30
+2017-07-31
+Loading PROMICE modelled melt and grain size
+CENEGPKAN_BKAN_MKAN_UKPC_LKPC_UMITNUK_KNUK_NNUK_UQAS_AQAS_LQAS_USCO_LSCO_UTAS_ATAS_LTAS_UTHU_LTHU_UUPE_LUPE_U done     Loading GC-Net modelled melt and grain size
+CP1          DYE-2          NASA-E          NASA-SE          NASA-U          Saddle          SouthDome          Summit          TUNU-N           done             

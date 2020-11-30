@@ -16,23 +16,7 @@ try:
 except:
     print('figures and output folders already exist')
 
-sys.stdout = open("Report.md", "w")
-# class Logger(object):
-#     def __init__(self):
-#         self.terminal = sys.stdout
-#         self.log = open("Report.md", "a")
-
-#     def write(self, message):
-#         self.terminal.write(message)
-#         self.log.write(message)  
-
-#     def flush(self):
-#         #this flush method is needed for python 3 compatibility.
-#         #this handles the flush command by doing nothing.
-#         #you might want to specify some extra behavior here.
-#         pass    
-
-# sys.stdout = Logger()
+# sys.stdout = open("Report.md", "w")
 
 path_to_PROMICE = 'C:/Users/bav/OneDrive - Geological survey of Denmark and Greenland/Code/AWS_Processing/Input/PROMICE/'
 
@@ -71,28 +55,15 @@ for ws in PROMICE_stations:
     
     print('## Adjusting data at '+site)
     df_v4 = pl.adjust_data(df_out, site)
-        
-    # if site == 'KAN_L':
-        # df_v4['SurfaceHeight(m)'] = df_v4['DepthPressureTransducer_Cor(m)']
-        # df_v4['SnowHeight(m)'] = np.NaN;
-       
+               
     # # combining pressure transducer and surface height to reconstruct the surface heigh
     print('## Summarizing surface height at '+site)
     df_v4 = pl.combine_hs_dpt(df_v4, site)
- 
-    # plt.figure()
-    # df_v4['SnowHeight(m)'].plot(label='SnowHeight(m)')
-    # # df_v4['HeightSensorBoom(m)'].plot(label='HeightSensorBoom(m)')
-    # df_v4['SurfaceHeight(m)'].plot(label='SurfaceHeight(m)')
-    # df_v4['DepthPressureTransducer_Cor(m)'].plot(label='DepthPressureTransducer_Cor(m)')
-    # df_v4['SurfaceHeight_summary(m)'].plot(label='SurfaceHeight_summary(m)')
-    # plt.legend()
-    
+     
     if len(df)>0:
         # saving to file
         df_v4.fillna(-999).to_csv('out/'+site+'_hour_v03_L3.txt', sep="\t")   
 
-    
-%run tocgen.py Report.md Report_toc.md
+# %run tocgen.py Report.md Report_toc.md
 
 # sys.stdout.close()
