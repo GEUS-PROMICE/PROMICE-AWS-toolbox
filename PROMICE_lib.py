@@ -328,7 +328,7 @@ def combine_hs_dpt(df, site):
             # then find begining and end
             ind_start[i] = np.argwhere(ind_abl_yr)[0][0]
             ind_end[i] = np.argwhere(ind_abl_yr)[-1]
-            hs1.iloc[ind_start[i]:ind_end[i]] = np.nan
+            # hs1.iloc[ind_start[i]:ind_end[i]] = np.nan
            # during the ablation we can delete the data from SR1 unless there is no other sensor
         elif np.any(np.isin(df.index[ind_yr].month.values, [6, 7, 8])):
             # if there is any data from june-august that year
@@ -363,7 +363,7 @@ def combine_hs_dpt(df, site):
     #     plt.axvspan(df.index[ind_start[i]],df.index[ind_end[i]], color='orange', alpha=0.1)
 
         # if np.any(~np.isnan(hs1.iloc[ind_start[i]:ind_end[i]])) or np.any(~np.isnan(z.iloc[ind_start[i]:ind_end[i]])):
-        #     hs1.iloc[ind_start[i]:ind_end[i]] = np.nan
+            #  hs1.iloc[ind_start[i]:ind_end[i]] = np.nan
     hs2 = hs2 - firstNonNan(hs2.values)
     
     plt.figure()
@@ -399,8 +399,12 @@ def combine_hs_dpt(df, site):
             if i > 0 and flag == 0:
                 # then we adjust the pressur SR2 to transducer
                 ind_first_nonan = hs2.index.get_loc(hs2.iloc[ind_start[i]:].first_valid_index())
-                hs2 = hs2 - np.nanmean(hs2.iloc[ind_first_nonan:(ind_first_nonan+24*7)])  + \
-                    np.nanmean(z.iloc[ind_first_nonan:(ind_first_nonan+24*7)])
+                if np.any(~np.isnan(z.iloc[ind_first_nonan:(ind_first_nonan+24*7)])):
+                    hs2 = hs2 - np.nanmean(hs2.iloc[ind_first_nonan:(ind_first_nonan+24*7)])  + \
+                        np.nanmean(z.iloc[ind_first_nonan:(ind_first_nonan+24*7)])
+                else:
+                    hs2 = hs2 - np.nanmean(hs2.iloc[ind_first_nonan:(ind_first_nonan+24*7)])  + \
+                        np.nanmean(hs1.iloc[ind_first_nonan:(ind_first_nonan+24*7)])                    
                 flag = 1
             if i == 0:
                 flag = 1
@@ -425,13 +429,18 @@ def combine_hs_dpt(df, site):
     df["SurfaceHeight_summary(m)"] = np.nan
    
     # in winter, both SR1 and SR2 are used
-    df.loc[ind_accumulation, "SurfaceHeight_summary(m)"] = np.nanmean( df.loc[ind_accumulation,["SurfaceHeight1_adj(m)","SurfaceHeight2_adj(m)"]].values, axis = 1)
+    df["SurfaceHeight_summary(m)"] = np.nanmean( df[["SurfaceHeight1_adj(m)","SurfaceHeight2_adj(m)"]].values, 
+                                                axis = 1)
     
     # in ablation season we use SR2 instead of the SR1&2 average
-    df.loc[ind_ablation, "SurfaceHeight_summary(m)"] = df.loc[ind_ablation,"SurfaceHeight2_adj(m)"].interpolate(limit=72).values  
+    data_update = df["SurfaceHeight2_adj(m)"].interpolate(limit=72).values 
+    ind_update = np.logical_and(ind_ablation,  ~np.isnan(data_update))
+    df.loc[ind_update,"SurfaceHeight_summary(m)"] = data_update[ind_update]  
 
     # in ablation season we use pressure transducer over all other options
-    df.loc[ind_ablation, "SurfaceHeight_summary(m)"] = df.loc[ind_ablation,"DepthPressureTransducer_Cor_adj(m)"].interpolate(limit=72).values  
+    data_update = df[ "DepthPressureTransducer_Cor_adj(m)"].interpolate(limit=72).values 
+    ind_update = np.logical_and(ind_ablation, ~np.isnan(data_update))
+    df.loc[ind_update,"SurfaceHeight_summary(m)"] = data_update[ind_update] 
     
     # plotting result
     f1 = plt.figure(figsize=(10, 8))    
