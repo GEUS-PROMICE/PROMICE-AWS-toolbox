@@ -11,7 +11,10 @@ t0,t1,variable,flag,comment,URL_graphic
 2014-09-20T00:00:00+00:00,2015-08-14T00:00:00+00:00,SurfaceHeightm,CHECKME,Manually flagged by bav,
 2015-09-15T00:00:00+00:00,2015-12-14T00:00:00+00:00,SurfaceHeightm,CHECKME,Manually flagged by bav,
 2016-06-15T00:00:00+00:00,2016-07-14T00:00:00+00:00,SurfaceHeightm,CHECKME,Manually flagged by bav,
-2008-05-31T00:00:00+00:00,2010-01-01T00:00:00+00:00,DepthPressureTransducer_Cor(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/MIT_dpt_1.png
+2008-06-01T00:00:00+00:00,2009-08-12T00:00:00+00:00,DepthPressureTransducer_Cor(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/MIT_dpt_1.png
 2015-12-31T00:00:00+00:00,2016-05-29T00:00:00+00:00,DepthPressureTransducer_Cor(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/MIT_dpt_1.png
-2016-01-02T00:00:00+00:00,2018-11-16T00:00:00+00:00,DepthPressureTransducer_Cor(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/MIT_dpt_1.png
-2019-01-02T00:00:00+00:00,2019-11-16T00:00:00+00:00,DepthPressureTransducer_Cor(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/MIT_dpt_1.png
+2016-01-02T00:00:00+00:00,2017-07-01T00:00:00+00:00,DepthPressureTransducer_Cor(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/MIT_dpt_1.png
+2017-10-01T00:00:00+00:00,2018-07-01T00:00:00+00:00,DepthPressureTransducer_Cor(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/MIT_dpt_1.png
+2018-10-01T00:00:00+00:00,2018-11-01T00:00:00+00:00,DepthPressureTransducer_Cor(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/MIT_dpt_1.png
+2019-01-02T00:00:00+00:00,2019-07-01T00:00:00+00:00,DepthPressureTransducer_Cor(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/MIT_dpt_1.png
+2019-09-10T00:00:00+00:00,2019-11-01T00:00:00+00:00,DepthPressureTransducer_Cor(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/MIT_dpt_1.png

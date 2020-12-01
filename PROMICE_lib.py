@@ -124,6 +124,7 @@ def remove_flagged_data(df, site, var_list = ['all'], plot = True):
         if plot:
             fig = plt.figure(figsize = (15,10))
             df[var].plot(style='o', label='bad data')
+            
         print('|start time|end time|variable|')
         print('|-|-|-|')
         for t0, t1 in zip(pd.to_datetime(flag_data.loc[flag_data.variable==var_save].t0), 
@@ -174,10 +175,15 @@ def adjust_data(df, site):
                                      adj_info.loc[var].adjust_value):
             
             print('|'+str(t0)+'|'+str(t1)+'|'+func+'|'+str(val)+'|')
-            if np.isnan(t1):
-                t1 = df_out.time[-1].isoformat()
+            if isinstance(t1, float):
+                if np.isnan(t1):
+                    t1 = df_out.time[-1].isoformat()
             if func == 'add': 
                 df_out.loc[t0:t1,var] = df_out.loc[t0:t1,var].values + val
+            if func == 'min_filter': 
+                tmp = df_out.loc[t0:t1,var].values
+                tmp[tmp<val] = np.nan
+                df_out.loc[t0:t1,var] = tmp
                 
         fig = plt.figure(figsize=(10,5))
         df[var].plot(style='o',label='before adjustment')
@@ -287,14 +293,13 @@ def combine_hs_dpt(df, site):
     
     
     # defining ice ablation period   
-    smoothed_PT =  df['DepthPressureTransducer_Cor(m)'].interpolate(limit=72).rolling(24*7).mean()
-    smoothed_PT = smoothed_PT.rolling(24*7).mean()
+    smoothed_PT =  df['DepthPressureTransducer_Cor(m)'].interpolate(limit=72).rolling('7D', min_periods=1).mean().shift(-84, freq='h')
+    smoothed_PT = smoothed_PT.rolling('7D', min_periods=1).mean().shift(-84, freq='h')
     ind_ablation = np.logical_and(smoothed_PT.diff().values <-0.00035, 
-                                  np.isin(df.index.month, [6, 7, 8, 9]))
+                                  np.isin(smoothed_PT.diff().index.month, [6, 7, 8, 9]))
+    ind_ablation = np.concatenate((ind_ablation[2*84:], ind_ablation[:2*84]))# no idea why the array is still shifted
     ind_accumulation =  ~ind_ablation
-    
-    # plotting the ablation season 
-
+       
     #adjusting Snow and Surface heights to the PT-derived height
     hs1=df["SnowHeight_adj(m)"].interpolate(limit=24*14).copy()
     hs2=df["SurfaceHeight_adj(m)"].interpolate(limit=24*14).copy()
@@ -343,6 +348,17 @@ def combine_hs_dpt(df, site):
             ind_start[i] = -999
             ind_end[i] = -999
             continue
+        
+    plt.figure()
+    # plt.plot(df.index, ind_ablation*(-10))
+    ((smoothed_PT-smoothed_PT.mean())/1000).plot()
+    ((z-z.mean())/1000).plot()
+    
+    smoothed_PT.diff().plot()
+    plt.axhline(-0.00035)
+    for i, y in enumerate(np.unique(years)):
+        plt.axvspan(df.index[ind_start[i]],df.index[ind_end[i]], color='orange', alpha=0.1)
+    
     plt.figure()
     df['SnowHeight(m)'].plot(color='darkgray',label='')
     df['SnowHeight_adj(m)'].plot(label='SnowHeight(m)')
@@ -356,19 +372,15 @@ def combine_hs_dpt(df, site):
     for i, y in enumerate(np.unique(years)):
         plt.axvspan(df.index[ind_start[i]],df.index[ind_end[i]], color='orange', alpha=0.1)
     
-    # plt.figure()
-    # smoothed_PT.diff().plot()
-    # plt.axhline(-0.00035)
-    # for i, y in enumerate(np.unique(years)):
-    #     plt.axvspan(df.index[ind_start[i]],df.index[ind_end[i]], color='orange', alpha=0.1)
 
         # if np.any(~np.isnan(hs1.iloc[ind_start[i]:ind_end[i]])) or np.any(~np.isnan(z.iloc[ind_start[i]:ind_end[i]])):
             #  hs1.iloc[ind_start[i]:ind_end[i]] = np.nan
-    hs2 = hs2 - firstNonNan(hs2.values)
+    # hs2 = hs2 - firstNonNan(hs2.values)
     
     plt.figure()
     z.plot()  
     hs1.plot()  
+    hs2.plot()  
     plt.title(site)
     
     # adjusting hs1 at the end of each ablation period
@@ -379,18 +391,29 @@ def combine_hs_dpt(df, site):
         if np.any(~np.isnan(z.iloc[(ind_end[i]-24*7):(ind_end[i]+24*7)])) :
             
             #if it is not the first year and that no adjustment has been done
-            if i > 0 and flag == 0:
+            if (i > 0 or z.first_valid_index().month>=8) and flag == 0:
                 # then we adjust the pressur transducer to SR2
                 ind_first_nonan = z.index.get_loc(z.iloc[ind_start[i]:].first_valid_index())
                 z = z - np.nanmean(z.iloc[ind_first_nonan:(ind_first_nonan+24*7)])  + \
                     np.nanmean(hs2.iloc[ind_first_nonan:(ind_first_nonan+24*7)])
+                z.plot()  
                 flag = 1
+                
             if i == 0:
                 flag = 1
                 
-            hs1.iloc[ind_end[i]:] = hs1.iloc[ind_end[i]:] - \
-                np.nanmean(hs1.iloc[(ind_end[i]-24*7):(ind_end[i]+24*7)])  + \
-                    np.nanmean(z.iloc[(ind_end[i]-24*7):(ind_end[i]+24*7)])
+            if ~np.isnan(np.nanmean(hs1.iloc[(ind_end[i]-24*7):(ind_end[i]+24*7)])): 
+                # if hs1.first_valid_index().month>=8
+                hs1.iloc[ind_end[i]:] = hs1.iloc[ind_end[i]:] - \
+                    np.nanmean(hs1.iloc[(ind_end[i]-24*7):(ind_end[i]+24*7)])  + \
+                        np.nanmean(z.iloc[(ind_end[i]-24*7):(ind_end[i]+24*7)])
+            else:
+                tmp1 = hs1.iloc[ind_end[i]:ind_start[i+1]].values
+                tmp2 = hs2.iloc[ind_end[i]:ind_start[i+1]].values
+                ind = ~np.isnan(tmp1+tmp2)
+                
+                hs1.iloc[ind_end[i]:] = hs1.iloc[ind_end[i]:] - \
+                    np.nanmean(tmp1[ind])  +  np.nanmean(tmp2[ind])
                     
         # and adjust the end of ablation SR1 height to the SR2 height         
         elif np.any(~np.isnan(hs2.iloc[ind_end[i]:(ind_end[i]+24*7)])) :
@@ -404,7 +427,7 @@ def combine_hs_dpt(df, site):
                         np.nanmean(z.iloc[ind_first_nonan:(ind_first_nonan+24*7)])
                 else:
                     hs2 = hs2 - np.nanmean(hs2.iloc[ind_first_nonan:(ind_first_nonan+24*7)])  + \
-                        np.nanmean(hs1.iloc[ind_first_nonan:(ind_first_nonan+24*7)])                    
+                        np.nanmean(hs1.iloc[ind_first_nonan:(ind_first_nonan+24*7)])    
                 flag = 1
             if i == 0:
                 flag = 1

@@ -1,5 +1,4 @@
 t0,t1,variable,adjust_function,adjust_value,comment,URL_graphic
-2012-07-27T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,5.0,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/KPC_U_dpt_1.png
 2012-07-21T00:00:00+00:00,,SnowHeight(m),add,0.3,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flag-fix/graphics/KPC_U_hs_1.png
 2012-07-23T00:00:00+00:00,,SurfaceHeight(m),add,-0.2,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flag-fix/graphics/KPC_U_hs_2.png
 2019-07-02T00:00:00+00:00,,SnowHeight(m),add,-0.5,manually adjusted by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flag-fix/graphics/KPC_U_hs_1.png
