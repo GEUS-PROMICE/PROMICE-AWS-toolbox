@@ -6,103 +6,111 @@ Processing toolbox for PROMICE Automatic Weather Station (AWS) data, and much mo
 
 This repository contains Python functions for quality check, filtering and adjustment of AWS data. They rely on pandas DataFrames and require a physical copy of the PROMICE data (available here: www.promice.dk).
 
+
+![ptd_proc_KAN_L](doc/fig1.JPG)
+
 All functions are located in the script [PROMICE_lib.py](PROMICE_lib.py) and an exemple of how to use them is given in [main,py](main.py).
 
-1. [Pressure transducer processing](#pressure-transducer-processing)
-2. [Snow height processing](#snow-height-processing)
-3. [Combining ice and snow height](#combining-ice-and-snow-height)
+## Main functions
+
+1. [remove_flagged_data](#remove_flagged_data)
+2. [adjust_data](#adjust_data)
+3. [combine_hs_dpt](#combine_hs_dpt)
 4. [Output PROMICE_L2 file](#Output-PROMICE_L2-file)
+5. [Repporting](#repporting)
+6. [Running the scripts](#running)
 
-# Pressure transducer processing
-![ptd_proc_KAN_L](doc/fig1.JPG)
-Processing, filtering and exclusion of ice ablation time series acquired at PROMICE automatic weather stations (www.promice.dk). 
+# remove_flagged_data
 
-The [dpt_proc](https://github.com/BaptisteVandecrux/PROMICE-AWS-toolbox/blob/d98ce0fb3c2ed2a9000d7986299a7306c89e83e2/PROMICE_lib.py#L204) function allows to:
+[to do: flag instead of remove]
 
-## 1. Adjust pressure transducer on specific days
-This is done with the file [pres_trans_adj.csv](metadata/pres_trans_adj.csv) which has a simple structure:
+*Illustration:*
+![](https://raw.githubusercontent.com/GEUS-PROMICE/PROMICE-AWS-toolbox/master/figures/TAS_A_DepthPressureTransducer_Corm_data_removed.png)
+
+This function reads the station-specific error files [metadata/flags/\<station_name>.csv](metadata/flags) where the erroneous periods are reported for each variable.
+
+These error files have the following structure:
+
+t0 | t1 |  variable | flag | comment | URL_graphic
+-- | -- |  -- | -- | -- | -- 
+2017-05-23 10:00:00 | 2017-06-10 11:00:00 | DepthPressureTransducer_Cor | CHECKME | manually flagged by bav | https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/KPC_L_error_data.png
+... | ... |  ... | ... | ... | ...
+
+with
+
+field | meaning
+-- | --
+*t0* |  ISO date of the begining of flagged period
+*t1*| ISO date of the end of flagged period
+*variable*|name of the variable to be flagged. [to do: '*' for all variables]
+*flag*| short flagging abreviation: <br> - CHECKME<br> - UNKNOWN <br> - NAN <br> - OOL <br> - VISIT
+*comment* | Description of the issue
+*URL_graphic* | URL to illustration or Github issue thread
+
+The file is comma-separated:
 ```
-site, year, adjust_start, adjust_val
-NUK_U, 2010, 204, -2.6
+t0,t1,variable,flag,comment,URL_graphic
+2012-07-19T00:00:00+00:00,2012-07-30T00:00:00+00:00,SnowHeight(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/KPC_L_error_data.png
+2012-07-19T00:00:00+00:00,2012-07-21T00:00:00+00:00,DepthPressureTransducer_Cor(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/KPC_L_error_data.png
 ...
 ```
-Here at NUK_U, in 2010 on day of the year 204, the pressure transducer depth will be decreased by 2.6m. Add lines to that file to add adjustments.
 
-## 2. Filter data
-At the moment there are three filters applied on the pressure transducer depth:
-- one hampel filter on the entire record
-- a stricter hampel filter for doy<140
-- a gradient filter where depth is not allowed to decrease more than a certain threshold within a timestep
+The function [remove_flagged_data](https://github.com/GEUS-PROMICE/PROMICE-AWS-toolbox/blob/c2e86f679a5376b391e2d9b0c524455242a6d72a/PROMICE_lib.py#L82) then removes these flagged data from the dataframe.
 
-## 3. Manually discard data during user-defined periods
-This is done with the file [pres_trans_err.csv](metadata/pres_trans_err.csv) which has a simple structure:
+## adjust_data
+[to do: add more adjustment functions (rotation, smoothing... etc)]
+
+*Illustration:*
+![](https://raw.githubusercontent.com/GEUS-PROMICE/PROMICE-AWS-toolbox/master/figures/UPE_L_adj_DepthPressureTransducer_Cor(m).jpeg)
+
+This function reads the station-specific adjustment files [metadata/flag-fix/\<station_name>.csv](metadata/flag-fix) where the required adjustments are reported for each variable.
+
+
+These error files have the following structure:
+
+t0 | t1 |  variable | adjust_function | adjust_value|comment|URL_graphic
+-- | -- |  -- | -- | -- | -- | -- 
+2017-05-23 10:00:00 | 2017-06-10 11:00:00 | DepthPressureTransducer_Cor | add | -2 |manually adjusted by bav | https://raw.githubusercontent.com/GEUS-PROMICE/PROMICE-AWS-toolbox/master/figures/UPE_L_adj_DepthPressureTransducer_Cor(m).jpeg
+... | ... |  ... | ... | ... | ... | ...
+
+with
+
+field | meaning
+-- | --
+*t0* |  ISO date of the begining of flagged period
+*t1*| ISO date of the end of flagged period
+*variable*|name of the variable to be flagged. [to do: '*' for all variables]
+*adjust_function*| function that needs to be applied over the given period: <br> - add<br> - filter_min <br> - filter_max <br> - rotate <br> - smooth
+*adjust_value* | input value to the adjustment function
+*comment* | Description of the issue
+*URL_graphic* | URL to illustration or Github issue thread
+
+The file is comma-separated:
 ```
-site, year, err_start, err_end
-UPE_U, 2019, 250, 260
+t0,t1,variable,adjust_function,adjust_value,comment,URL_graphic
+2015-03-01T00:00:00+00:00,,DepthPressureTransducer_Cor(m),add,2.3,manually adjusted by bav,https://github.com/GEUS-PROMICE/PROMICE-AWS-toolbox/blob/master/Report_toc.md#s15-2-1
 ...
 ```
-Here at UPE_U, in 2019, the pressure transducer data between day of the year 250 and 260 will be discarded. Add lines to that file if needed.
 
-## Running the pressure transducer processing
+The function [adjust_data](https://github.com/GEUS-PROMICE/PROMICE-AWS-toolbox/blob/c2e86f679a5376b391e2d9b0c524455242a6d72a/PROMICE_lib.py#L154) then applies the given function to the given variable in the dataframe. **The adjusted variable is named *\<variable_name>_adj* in the final dataframe. The original data is kept.**
 
-```python
-    import PROMICE_lib as pl
-    path_to_PROMICE='path_to_PROMICE'
-    site = 'KAN_L'
-    df, site =pl.load_data(file=path_to_PROMICE+site+'_hour_v03.txt', year='all')
-    
-    # processing pressure transducer
-    df = pl.dpt_proc(df, year='all', site =site, visualisation=True)
-```
-## Output from the pressure transducer processing tool
+## combine_hs_dpt
 
-ptd.DPT_processing gives as output a panda dataframe containing all the columns from the original PROMICE files plus the following columns:
+This is a non-trivial procsessing step combining semi-automatically snow height, surface height and ice surface height measurements into a single record. It is still under development.
 
-**DepthPressureTransducer_Cor_adj(m)** that contains the adjusted and filtered data
+It uses 
+**SnowHeight(m)** that contains the adjusted and filtered data from the sonic ranger mounted on the AWS
+**SurfaceHeight_adj(m)** that contains the adjusted and filtered data from the sonic ranger mounted on the stake assembly
+**DepthPressureTransducer_Cor_adj(m)** that contains the adjusted and filtered pressure transducer data
 
-**FlagPressureTransducer** that contains a quality flag informing about the data:
-```
-0 = original data available
-1 = no data available    
-2 = data available but removed manually
-3 = data removed by filter
-4 = interpolated
-```
+More info will come.
 
-# Snow height processing
-![hs_proc_KPC_U](doc/fig2.JPG)
+*Illustration:*
+![](https://raw.githubusercontent.com/GEUS-PROMICE/PROMICE-AWS-toolbox/master/figures/QAS_U_surface_height.png)
 
-Processing, filtering and exclusion of the snow height time series acquired at PROMICE automatic weather stations (www.promice.dk). The height of the station boom and the height of a stake assembly above the surface are being measured by SR50 sonic rangers. These data can be used to determine the height of the snow present at the AWS.
 
-The [hs_proc](https://github.com/BaptisteVandecrux/PROMICE-AWS-toolbox/blob/d98ce0fb3c2ed2a9000d7986299a7306c89e83e2/PROMICE_lib.py#L394) function allows to:
 
-## 1. Adjust snow height on specific days
-This is done with the file [hs_adj.csv](metadata/hs_adj.csv) which has a simple structure:
-```
-site, instr, year, adjust_start, adjust_val
-NUK_U, 1, 2010, 204, -2.6
-...
-```
-Here at NUK_U, on instrument 1 (SR50 on weather station, 2 is for stake assembly), in 2010 on day of the year 204, the snow height will be decreased by 2.6m. Add lines to that file to add adjustments.
-
-## 2. Filter data
-At the moment there are three filters applied on the pressure transducer depth:
-- one hampel filter on the entire record
-- a stricter hampel filter for doy<140
-- a gradient filter where depth is not allowed to decrease more than a certain threshold within a timestep
-
-## 3. Manually discard data during user-defined periods
-*Under construction*
-
-This is done with the file [hs_err.csv](metadata/hs_err.csv) which has a simple structure:
-```
-site, instr, year, err_start, err_end
-UPE_U, 1, 2019, 250, 260
-...
-```
-Here at UPE_U, on instrument 1 (SR50 on weather station, 2 is for stake assembly), in 2019, the snow height data between day of the year 250 and 260 will be discarded. Add lines to that file if needed.
-
-## Running
+## Running the tools
 
 ```python
     import PROMICE_lib as pl
@@ -113,105 +121,49 @@ Here at UPE_U, on instrument 1 (SR50 on weather station, 2 is for stake assembly
     # processing snow height
     df = pl.hs_proc(df,site, visualisation=True)
 ```
-## Output
-
-[hs_proc](https://github.com/BaptisteVandecrux/PROMICE-AWS-toolbox/blob/d98ce0fb3c2ed2a9000d7986299a7306c89e83e2/PROMICE_lib.py#L394) gives as output a panda dataframe containing all the columns from the original PROMICE files plus the following columns:
-
-**SnowHeight1_adj(m)** that contains the adjusted and filtered snow height data derived from the SR50 mounted on the station. Note that:
-    
-+ When the station is standing on melting ice, **SnowHeight1_adj(m)** will remain at 0.
-+ The sonic ranger is installed ~2.6 m above the ice surface. It is not possible to measure snow height above that value.
-
-**SnowHeight2_adj(m)** that contains the adjusted and filtered snow height data derived from the SR50 mounted on the stake assembly. Note that:
-+ During intense melting, the stake assembly can bend and move.
-+ The sonic ranger is installed at a site-specific height above the ice surface. It is not possible to measure snow height above the installation height.
-+ The stake assembly is anchored several meters into the ice. So when snow is melted away and ice start to melt, **SnowHeight2_adj(m)** will give negative, decreasing height values.
-
-*Under development:
-**SnowHeight2_adj(m)** that contains a quality flag informing about the data:*
-```
-0 = original data available
-1 = no data available    
-2 = data available but removed manually
-3 = data removed by filter
-4 = interpolated
-```
-
-# Combining ice and snow height
-![hs_proc_KPC_U](doc/fig3.JPG)
-
-The pressure transducer tracks the ice surface, the sonic ranger ranger on the station tracks the snow height is bounded to 0 when the AWS is lying on bare ice and the sonic ranger on the stake assembly can track both snow and ice surface through time, but suffers from the movement/bending of the stake assembly. We here combine the three dataset to recreate the snow and ice surface.
-
-
-## Adjustments
-The [combine_hs_dpt](https://github.com/BaptisteVandecrux/PROMICE-AWS-toolbox/blob/d98ce0fb3c2ed2a9000d7986299a7306c89e83e2/PROMICE_lib.py#L482) function addresses the following issues:
-- In the previous step, depth of pressure transducer is reset to 0 every 1st of January. Adjust the ice surface measured by the pressure transducer so that it has a continuous value from year to year. 
-- The sonic ranger installed on the AWS gives 0 height if the station is lying on bare ice, even if that ice is melting. We re-adjust the surface height derived from this sonic ranger every September so that snow buids up on top of the bare ice.
-- The sonic ranger installed on the stake assemlby is adjusted each year so that the September-October values match with the sonic ranger installed on the AWS.
-
-
-## Running
-
-To combine the pressure transducer and snow height data, you need to process these two variables first, and the use [combine_hs_dpt](https://github.com/BaptisteVandecrux/PROMICE-AWS-toolbox/blob/d98ce0fb3c2ed2a9000d7986299a7306c89e83e2/PROMICE_lib.py#L482):
-
-```python
-    import PROMICE_lib as pl
-    path_to_PROMICE='path_to_PROMICE'
-    site = 'QAS_U'
-    df, site =pl.load_data(file=path_to_PROMICE+site+'_hour_v03.txt', year='all')
-    
-    # processing pressure transducer
-    df = pl.dpt_proc(df, year='all', site =site, visualisation=True)
-    
-    if len(df) > 0:    
-        # processing snow height
-        df = pl.hs_proc(df,site, visualisation=True)
-         # combining pressure transducer and surface height to reconstruct the surface heigh
-        df = pl.combine_hs_dpt(df, site)
-```
-
-## Output
-
-[combine_hs_dpt](https://github.com/BaptisteVandecrux/PROMICE-AWS-toolbox/blob/d98ce0fb3c2ed2a9000d7986299a7306c89e83e2/PROMICE_lib.py#L482) gives as output a panda dataframe containing all the columns from the original PROMICE files plus the following columns:
-
-**DepthPressureTransducer_Cor_adj(m)** that contains the adjusted, filtered and year-to-year continuous pressure transducer data.
-
-**SurfaceHeight1_adj(m)** that contains the adjusted and filtered surface height derived from the sonic ranger installed on the AWS.
-
-**SurfaceHeight2_adj(m)** that contains the adjusted and filtered surface height derived from the sonic ranger installed on the stake assembly.
-
-*Under development
-**FlagSurfaceHeight** that contains a quality flag informing about the data:
-```
-0 = original data available
-1 = no data available    
-2 = data available but removed manually
-3 = data removed by filter
-4 = interpolated
-```
-
 # Output PROMICE_L2 file
 
-This is easily done outputing the pandas dataframe to tab-delimited text file:
+A tab-delimited text file, with same format and same variable names is saved.
+The added fields are the variable-specific flag columns and the adjusted varaible columns.
+
+# Reporting
+
+A human-readable data processing report is saved here:
+https://github.com/GEUS-PROMICE/PROMICE-AWS-toolbox/blob/master/Report_toc.md
+
+
+# Running
+
+All these function can be run using the [main.py](main.py) script
 
 ```python
     import PROMICE_lib as pl
+    import sys
+    sys.stdout = open("Report.md", "w")
+    
     path_to_PROMICE='path_to_PROMICE'
     site = 'QAS_U'
-    df, site =pl.load_data(file=path_to_PROMICE+site+'_hour_v03.txt', year='all')
+    print('# '+site)
+    df =pl.load_promice(path_to_PROMICE+site+'_hour_v03.txt')
     
-    # processing pressure transducer
-    df = pl.dpt_proc(df, year='all', site =site, visualisation=True)
+    print('## Removing erroneous data at '+site)
+    df_out = pl.remove_flagged_data(df, site, plot=True)
     
-    if len(df) > 0:    
-        # processing snow height
-        df = pl.hs_proc(df,site, visualisation=True)
-         # combining pressure transducer and surface height to reconstruct the surface heigh
-        df = pl.combine_hs_dpt(df, site)
-        
+    print('## Adjusting data at '+site)
+    df_v4 = pl.adjust_data(df_out, site)
+               
+    # # combining pressure transducer and surface height to reconstruct the surface heigh
+    print('## Summarizing surface height at '+site)
+    df_v4 = pl.combine_hs_dpt(df_v4, site)
+     
+    if len(df)>0:
         # saving to file
-        if len(df)>0:
-            df.fillna(-999).to_csv(site+'_hour_v03_L2.txt', sep="\t")
+        df_v4.fillna(-999).to_csv('out/'+site+'_hour_v03_L3.txt', sep="\t")   
+    %run tocgen.py Report.md Report_toc.md
 ```
+
+
+
+
 
 
