@@ -17,7 +17,7 @@ All functions are located in the script [PROMICE_lib.py](PROMICE_lib.py) and an 
 2. [adjust_data](#adjust_data)
 3. [combine_hs_dpt](#combine_hs_dpt)
 4. [Output PROMICE_L2 file](#Output-PROMICE_L2-file)
-5. [Repporting](#repporting)
+5. [Reporting](#reporting)
 6. [Running the scripts](#running)
 
 # remove_flagged_data
