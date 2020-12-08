@@ -11,6 +11,13 @@ This repository contains Python functions for quality check, filtering and adjus
 
 All functions are located in the script [PROMICE_lib.py](PROMICE_lib.py) and an exemple of how to use them is given in [main,py](main.py).
 
+## Installation
+
+```
+pip install git+https://github.com/GEUS-PROMICE/PROMICE-AWS-toolbox.git
+
+```
+
 ## Main functions
 
 1. [remove_flagged_data](#remove_flagged_data)
@@ -20,7 +27,7 @@ All functions are located in the script [PROMICE_lib.py](PROMICE_lib.py) and an 
 5. [Reporting](#reporting)
 6. [Running the scripts](#running)
 
-# rflag_data
+# flag_data
 
 *Illustration:*
 ![](https://raw.githubusercontent.com/GEUS-PROMICE/PROMICE-AWS-toolbox/master/figures/TAS_A_DepthPressureTransducer_Corm_data_removed.png)
