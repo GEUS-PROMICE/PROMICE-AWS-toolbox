@@ -12,13 +12,6 @@ Contributors: Adrien Wehrlé, Jason E. Box, B. Vandecrux
 # -*- coding: utf-8 -*-
 
 """
-Main functions:    
-    - load_data: Load a PROMICE station dataset including all years or selected one(s).
-    - dpt_proc: Processes the pressure transducer data
-    - hs_proc: Processes the surface height data
-Plot functions:
-    - plot_pres_trans_adj
-    - plot_hs_adj
 Tools:
     - smooth
     - hampel
@@ -79,7 +72,7 @@ def load_promice(path_promice):
 
     return df
 #%% 
-def remove_flagged_data(df, site, var_list = ['all'], plot = True):
+def flag_data(df, site, var_list = ['all'], plot = True, remove_data = False):
     '''
     Replace data within a specified variable, between specified dates by NaN.
     Reads from file "metadata/flags/<site>.csv".
@@ -104,7 +97,7 @@ def remove_flagged_data(df, site, var_list = ['all'], plot = True):
     if var_list[0]=='all':
         var_list =  np.unique(flag_data.variable)
         
-    print('Deleting flagged data:')
+    print('Flagging data:')
     for var in var_list:
         var_save = var
         if var not in df_out.columns :
@@ -120,6 +113,8 @@ def remove_flagged_data(df, site, var_list = ['all'], plot = True):
                 else:
                     print('Warning: interpreting '+var+' as '+var_new[0])
                     var = var_new[0]
+        df_out[var+'_qc'] = 'OK'
+        df_out.loc[np.isnan(df_out[var]), var+'_qc'] = 'NAN'
             
         if plot:
             fig = plt.figure(figsize = (15,10))
@@ -127,13 +122,16 @@ def remove_flagged_data(df, site, var_list = ['all'], plot = True):
             
         print('|start time|end time|variable|')
         print('|-|-|-|')
-        for t0, t1 in zip(pd.to_datetime(flag_data.loc[flag_data.variable==var_save].t0), 
-                               pd.to_datetime(flag_data.loc[flag_data.variable==var_save].t1)):
+        for t0, t1,flag in zip(pd.to_datetime(flag_data.loc[flag_data.variable==var_save].t0), 
+                               pd.to_datetime(flag_data.loc[flag_data.variable==var_save].t1),
+                               flag_data.loc[flag_data.variable==var_save].flag):
             print('|'+str(t0) +'|'+ str(t1)+'|'+var+'|')
-            df_out.loc[t0:t1, var] = np.NaN
+            df_out.loc[t0:t1, var+'_qc'] = flag
+            if remove_data:
+                df_out.loc[t0:t1, var] = np.NaN
             
         if plot:
-            df_out[var].plot(style='o', label='good data')
+            df_out.loc[df_out[var+'_qc'] == 'OK', var].plot(style='o', label='good data')
             plt.title(site)
             plt.xlabel('Year')
             plt.ylabel(var)
@@ -145,7 +143,7 @@ def remove_flagged_data(df, site, var_list = ['all'], plot = True):
             plt.title(site)
             fig.savefig('figures/'+site+'_'+var_save+'_data_removed.png',dpi=70)
             print(' ')
-            print('![Erroneous data at '+ site+'](figures/'+site+'_'+var_save+'_data_removed.png)')
+            print('![Erroneous data at '+ site+'](figures/'+site+'_'+var_save+'_data_flagging.png)')
             print(' ')
 
     return df_out
@@ -153,11 +151,11 @@ def remove_flagged_data(df, site, var_list = ['all'], plot = True):
 #%%
 def adjust_data(df, site):
     df_out = df.copy()
-    if not os.path.isfile('metadata/flag-fix/'+site+'.csv'):
+    if not os.path.isfile('metadata/adjustments/'+site+'.csv'):
         print('No data to fix at '+site)
         return df_out
     
-    adj_info = pd.read_csv('metadata/flag-fix/'+site+'.csv')
+    adj_info = pd.read_csv('metadata/adjustments/'+site+'.csv')
     adj_info=adj_info.sort_values(by=['variable','t0']) 
     adj_info.set_index(['variable','t0'],drop=False,inplace=True)
 

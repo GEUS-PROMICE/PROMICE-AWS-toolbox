@@ -7,7 +7,7 @@ Created on Wed Aug 19 20:00:14 2020
 # %matplotlib inline
 # %matplotlib qt
 import os, sys
-import PROMICE_lib as pl
+import PROMICE_toolbox as ptb
 import matplotlib.pyplot as plt
 
 try:
@@ -16,7 +16,7 @@ try:
 except:
     print('figures and output folders already exist')
 
-sys.stdout = open("Report.md", "w")
+sys.stdout = open("out/Report.md", "w")
 
 path_to_PROMICE = 'C:/Users/bav/OneDrive - Geological survey of Denmark and Greenland/Code/AWS_Processing/Input/PROMICE/'
 
@@ -48,22 +48,22 @@ PROMICE_stations = [('EGP',(75.6247,-35.9748), 2660),  #OK
 for ws in PROMICE_stations:
     site = ws[0]
     print('# '+site)
-    df =pl.load_promice(path_to_PROMICE+site+'_hour_v03.txt')
+    df =ptb.load_promice(path_to_PROMICE+site+'_hour_v03.txt')
     
     print('## Removing erroneous data at '+site)
-    df_out = pl.remove_flagged_data(df, site, plot=True)
+    df_out = ptb.flag_data(df, site, plot=True, remove_data = True)
     
     print('## Adjusting data at '+site)
-    df_v4 = pl.adjust_data(df_out, site)
+    df_v4 = ptb.adjust_data(df_out, site)
                
     # # combining pressure transducer and surface height to reconstruct the surface heigh
     print('## Summarizing surface height at '+site)
-    df_v4 = pl.combine_hs_dpt(df_v4, site)
+    df_v4 = ptb.combine_hs_dpt(df_v4, site)
      
     if len(df)>0:
         # saving to file
-        df_v4.fillna(-999).to_csv('out/'+site+'_hour_v03_L3.txt', sep="\t")   
+        df_v4.fillna(-999).to_csv('out/v03_L3/'+site+'_hour_v03_L3.txt', sep="\t")   
 
-%run tocgen.py Report.md Report_toc.md
+%run tocgen.py out/Report.md out/Report_toc.md
 
 # sys.stdout.close()

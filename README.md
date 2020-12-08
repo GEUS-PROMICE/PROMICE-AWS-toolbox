@@ -20,9 +20,7 @@ All functions are located in the script [PROMICE_lib.py](PROMICE_lib.py) and an 
 5. [Reporting](#reporting)
 6. [Running the scripts](#running)
 
-# remove_flagged_data
-
-[to do: flag instead of remove]
+# rflag_data
 
 *Illustration:*
 ![](https://raw.githubusercontent.com/GEUS-PROMICE/PROMICE-AWS-toolbox/master/figures/TAS_A_DepthPressureTransducer_Corm_data_removed.png)
@@ -55,7 +53,7 @@ t0,t1,variable,flag,comment,URL_graphic
 ...
 ```
 
-The function [remove_flagged_data](https://github.com/GEUS-PROMICE/PROMICE-AWS-toolbox/blob/c2e86f679a5376b391e2d9b0c524455242a6d72a/PROMICE_lib.py#L82) then removes these flagged data from the dataframe.
+For each flag regarding a variable <var> within the database, the function [flag_data](https://github.com/GEUS-PROMICE/PROMICE-AWS-toolbox/blob/c2e86f679a5376b391e2d9b0c524455242a6d72a/PROMICE_lib.py#L82) adds a field <var>_qc to the dataframe and assigns the to the flagged time steps the value of the flag in the table above (NAN, CHECKME, VISIT...). If the option 'remove_data=True' is used, then the same function removes these flagged time steps from the <var> column.
 
 ## adjust_data
 [to do: add more adjustment functions (rotation, smoothing... etc)]
@@ -63,7 +61,7 @@ The function [remove_flagged_data](https://github.com/GEUS-PROMICE/PROMICE-AWS-t
 *Illustration:*
 ![](https://raw.githubusercontent.com/GEUS-PROMICE/PROMICE-AWS-toolbox/master/figures/UPE_L_adj_DepthPressureTransducer_Cor(m).jpeg)
 
-This function reads the station-specific adjustment files [metadata/flag-fix/\<station_name>.csv](metadata/flag-fix) where the required adjustments are reported for each variable.
+This function reads the station-specific adjustment files [metadata/adjustments/\<station_name>.csv](metadata/adjustments) where the required adjustments are reported for each variable.
 
 
 These error files have the following structure:

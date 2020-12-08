@@ -1,7 +1,0 @@
-t0,t1,variable,flag,comment,URL_graphic
-2014-12-31T00:00:00+00:00,2015-02-19T00:00:00+00:00,DepthPressureTransducer_Cor(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/SCO_L_dpt_1.png
-2015-03-16T00:00:00+00:00,2015-04-20T00:00:00+00:00,DepthPressureTransducer_Cor(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/SCO_L_dpt_1.png
-2018-09-15T00:00:00+00:00,2018-10-27T00:00:00+00:00,DepthPressureTransducer_Cor(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/SCO_L_dpt_1.png
-2019-04-30T00:00:00+00:00,2019-06-11T00:00:00+00:00,DepthPressureTransducer_Cor(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/SCO_L_dpt_1.png
-2013-08-11T00:00:00+00:00,2014-08-13T00:00:00+00:00,SurfaceHeight(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/SCO_L_dpt_1.png
-2016-06-03T00:00:00+00:00,2016-09-22T00:00:00+00:00,SurfaceHeight(m),CHECKME,manually flagged by bav,https://github.com/GEUS-PROMICE/AWS-data/blob/main/flags/graphics/SCO_L_dpt_1.png
