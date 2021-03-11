@@ -134,12 +134,12 @@ The added fields are the variable-specific flag columns and the adjusted varaibl
 # Reporting
 
 A human-readable data processing report is saved here:
-https://github.com/GEUS-PROMICE/PROMICE-AWS-toolbox/blob/master/Report_toc.md
+https://github.com/GEUS-PROMICE/PROMICE-AWS-toolbox/blob/master/out/Report_toc.md
 
 
 # Running
 
-All these function can be run using the [main.py](main.py) script
+All these function can be run using the [example.py](example.py) script
 
 ```python
     import PROMICE_lib as pl
