@@ -118,7 +118,7 @@ def flag_data(df, site, var_list = ['all'], plot = True, remove_data = False):
             
         if plot:
             fig = plt.figure(figsize = (15,10))
-            df[var].plot(style='o', label='bad data')
+            df[var].plot(style='ro', label='bad data')
             
         print('|start time|end time|variable|')
         print('|-|-|-|')
@@ -131,7 +131,9 @@ def flag_data(df, site, var_list = ['all'], plot = True, remove_data = False):
                 df_out.loc[t0:t1, var] = np.NaN
             
         if plot:
-            df_out.loc[df_out[var+'_qc'] == 'OK', var].plot(style='o', label='good data')
+            if len(df_out.loc[df_out[var+'_qc'] == 'OK', var])>0:
+                df_out.loc[df_out[var+'_qc'] == 'OK', var].plot(style='o', label='good data')
+
             plt.title(site)
             plt.xlabel('Year')
             plt.ylabel(var)

@@ -10,11 +10,9 @@ import os, sys
 import PROMICE_toolbox as ptb
 import matplotlib.pyplot as plt
 
-try:
-    os.mkdir('figures')
-    os.mkdir('out')
-except:
-    print('figures and output folders already exist')
+os.makedirs('figures',exist_ok = True)
+os.makedirs('out',exist_ok = True)
+os.makedirs('out/v03_L3',exist_ok = True)
 
 sys.stdout = open("out/Report.md", "w")
 
@@ -45,7 +43,7 @@ PROMICE_stations = [('EGP',(75.6247,-35.9748), 2660),  #OK
                     ('UPE_U',(72.8878,-53.5783), 940)
                    ]
 
-for ws in PROMICE_stations:
+for ws in PROMICE_stations[7:]:
     site = ws[0]
     print('# '+site)
     df =ptb.load_promice(path_to_PROMICE+site+'_hour_v03.txt')
