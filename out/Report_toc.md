@@ -169,7 +169,7 @@ Flagging data:
 |2014-10-08 00:00:00+00:00|2014-11-16 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
 |2019-10-07 00:00:00+00:00|2019-10-27 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
  
-![Erroneous data at KAN_L](figures/KAN_L_DepthPressureTransducer_Corm_data_flagging.png)
+![Erroneous data at KAN_L](figures/KAN_L_DepthPressureTransducer_Corm_data_removed.png)
  
 |start time|end time|variable|
 |-|-|-|
@@ -177,7 +177,7 @@ Flagging data:
 |2012-01-01 00:00:00+00:00|2016-09-01 00:00:00+00:00|SnowHeight(m)|
 |2017-09-01 00:00:00+00:00|2020-09-01 00:00:00+00:00|SnowHeight(m)|
  
-![Erroneous data at KAN_L](figures/KAN_L_SnowHeightm_data_flagging.png)
+![Erroneous data at KAN_L](figures/KAN_L_SnowHeightm_data_removed.png)
  
 |start time|end time|variable|
 |-|-|-|
@@ -186,7 +186,7 @@ Flagging data:
 |2014-06-20 00:00:00+00:00|2014-08-15 00:00:00+00:00|SurfaceHeight(m)|
 |2016-01-01 00:00:00+00:00|2016-08-15 00:00:00+00:00|SurfaceHeight(m)|
  
-![Erroneous data at KAN_L](figures/KAN_L_SurfaceHeightm_data_flagging.png)
+![Erroneous data at KAN_L](figures/KAN_L_SurfaceHeightm_data_removed.png)
  
 ## <a id='s3-2' />Adjusting data at KAN_L
 ### <a id='s3-2-1' />Adjusting DepthPressureTransducer_Cor(m)
@@ -227,7 +227,7 @@ Flagging data:
 |-|-|-|
 |2013-12-31 00:00:00+00:00|2015-07-19 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
  
-![Erroneous data at KAN_M](figures/KAN_M_DepthPressureTransducer_Corm_data_flagging.png)
+![Erroneous data at KAN_M](figures/KAN_M_DepthPressureTransducer_Corm_data_removed.png)
  
 |start time|end time|variable|
 |-|-|-|
@@ -237,7 +237,7 @@ Flagging data:
 |2014-09-05 00:00:00+00:00|2015-09-01 00:00:00+00:00|SurfaceHeight(m)|
 |2016-07-05 00:00:00+00:00|2018-06-01 00:00:00+00:00|SurfaceHeight(m)|
  
-![Erroneous data at KAN_M](figures/KAN_M_SurfaceHeightm_data_flagging.png)
+![Erroneous data at KAN_M](figures/KAN_M_SurfaceHeightm_data_removed.png)
  
 ## <a id='s4-2' />Adjusting data at KAN_M
 ### <a id='s4-2-1' />Adjusting DepthPressureTransducer_Cor(m)
@@ -273,7 +273,7 @@ Flagging data:
 |2015-05-03 11:00:00+00:00|2018-01-17 00:00:00+00:00|SnowHeight(m)|
 |2014-12-06 20:00:00+00:00|2014-12-23 00:00:00+00:00|SnowHeight(m)|
  
-![Erroneous data at KAN_U](figures/KAN_U_SnowHeightm_data_flagging.png)
+![Erroneous data at KAN_U](figures/KAN_U_SnowHeightm_data_removed.png)
  
 |start time|end time|variable|
 |-|-|-|
@@ -281,7 +281,7 @@ Flagging data:
 |2011-10-26 05:00:00+00:00|2012-01-08 00:00:00+00:00|SurfaceHeight(m)|
 |2014-12-06 20:00:00+00:00|2014-12-23 00:00:00+00:00|SurfaceHeight(m)|
  
-![Erroneous data at KAN_U](figures/KAN_U_SurfaceHeightm_data_flagging.png)
+![Erroneous data at KAN_U](figures/KAN_U_SurfaceHeightm_data_removed.png)
  
 ## <a id='s5-2' />Adjusting data at KAN_U
 ### <a id='s5-2-1' />Adjusting SnowHeight(m)
@@ -314,13 +314,13 @@ Flagging data:
 |2019-09-07 00:00:00+00:00|2019-09-11 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
 |2019-09-15 00:00:00+00:00|2020-01-01 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
  
-![Erroneous data at KPC_L](figures/KPC_L_DepthPressureTransducer_Corm_data_flagging.png)
+![Erroneous data at KPC_L](figures/KPC_L_DepthPressureTransducer_Corm_data_removed.png)
  
 |start time|end time|variable|
 |-|-|-|
 |2012-07-19 00:00:00+00:00|2012-07-30 00:00:00+00:00|SnowHeight(m)|
  
-![Erroneous data at KPC_L](figures/KPC_L_SnowHeightm_data_flagging.png)
+![Erroneous data at KPC_L](figures/KPC_L_SnowHeightm_data_removed.png)
  
 |start time|end time|variable|
 |-|-|-|
@@ -329,7 +329,7 @@ Flagging data:
 |2014-07-20 00:00:00+00:00|2015-02-28 00:00:00+00:00|SurfaceHeight(m)|
 |2016-11-01 00:00:00+00:00|2019-07-30 00:00:00+00:00|SurfaceHeight(m)|
  
-![Erroneous data at KPC_L](figures/KPC_L_SurfaceHeightm_data_flagging.png)
+![Erroneous data at KPC_L](figures/KPC_L_SurfaceHeightm_data_removed.png)
  
 ## <a id='s6-2' />Adjusting data at KPC_L
 ### <a id='s6-2-1' />Adjusting DepthPressureTransducer_Cor(m)
@@ -360,7 +360,7 @@ Flagging data:
 |-|-|-|
 |2006-07-10 00:00:00+00:00|2020-01-10 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
  
-![Erroneous data at KPC_U](figures/KPC_U_DepthPressureTransducer_Corm_data_flagging.png)
+![Erroneous data at KPC_U](figures/KPC_U_DepthPressureTransducer_Corm_data_removed.png)
  
 ## <a id='s7-2' />Adjusting data at KPC_U
 ### <a id='s7-2-1' />Adjusting SnowHeight(m)
@@ -398,14 +398,14 @@ Flagging data:
 |2019-01-02 00:00:00+00:00|2019-07-01 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
 |2019-09-10 00:00:00+00:00|2019-11-01 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
  
-![Erroneous data at MIT](figures/MIT_DepthPressureTransducer_Corm_data_flagging.png)
+![Erroneous data at MIT](figures/MIT_DepthPressureTransducer_Corm_data_removed.png)
  
 Warning: interpreting LongwaveRadiationDownWm2 as LongwaveRadiationDown(W/m2)
 |start time|end time|variable|
 |-|-|-|
 |2019-04-01 00:00:00+00:00|2019-07-31 00:00:00+00:00|LongwaveRadiationDown(W/m2)|
  
-![Erroneous data at MIT](figures/MIT_LongwaveRadiationDownWm2_data_flagging.png)
+![Erroneous data at MIT](figures/MIT_LongwaveRadiationDownWm2_data_removed.png)
  
 Warning: interpreting ShortwaveRadiationDownWm2 as ShortwaveRadiationDown(W/m2)
 |start time|end time|variable|
@@ -413,7 +413,7 @@ Warning: interpreting ShortwaveRadiationDownWm2 as ShortwaveRadiationDown(W/m2)
 |2013-01-25 11:00:00+00:00|2013-06-21 00:00:00+00:00|ShortwaveRadiationDown(W/m2)|
 |2015-01-25 11:00:00+00:00|2015-07-21 00:00:00+00:00|ShortwaveRadiationDown(W/m2)|
  
-![Erroneous data at MIT](figures/MIT_ShortwaveRadiationDownWm2_data_flagging.png)
+![Erroneous data at MIT](figures/MIT_ShortwaveRadiationDownWm2_data_removed.png)
  
 Warning: interpreting ShortwaveRadiationUpWm2 as ShortwaveRadiationUp(W/m2)
 |start time|end time|variable|
@@ -421,14 +421,14 @@ Warning: interpreting ShortwaveRadiationUpWm2 as ShortwaveRadiationUp(W/m2)
 |2013-01-25 11:00:00+00:00|2013-06-21 00:00:00+00:00|ShortwaveRadiationUp(W/m2)|
 |2015-01-25 11:00:00+00:00|2015-07-21 00:00:00+00:00|ShortwaveRadiationUp(W/m2)|
  
-![Erroneous data at MIT](figures/MIT_ShortwaveRadiationUpWm2_data_flagging.png)
+![Erroneous data at MIT](figures/MIT_ShortwaveRadiationUpWm2_data_removed.png)
  
 Warning: interpreting SnowHeightm as SnowHeight(m)
 |start time|end time|variable|
 |-|-|-|
 |2008-06-01 00:00:00+00:00|2010-01-01 00:00:00+00:00|SnowHeight(m)|
  
-![Erroneous data at MIT](figures/MIT_SnowHeightm_data_flagging.png)
+![Erroneous data at MIT](figures/MIT_SnowHeightm_data_removed.png)
  
 Warning: interpreting SurfaceHeightm as SurfaceHeight(m)
 |start time|end time|variable|
@@ -440,7 +440,7 @@ Warning: interpreting SurfaceHeightm as SurfaceHeight(m)
 |2015-09-15 00:00:00+00:00|2015-12-14 00:00:00+00:00|SurfaceHeight(m)|
 |2016-06-15 00:00:00+00:00|2016-07-14 00:00:00+00:00|SurfaceHeight(m)|
  
-![Erroneous data at MIT](figures/MIT_SurfaceHeightm_data_flagging.png)
+![Erroneous data at MIT](figures/MIT_SurfaceHeightm_data_removed.png)
  
 ## <a id='s8-2' />Adjusting data at MIT
 ### <a id='s8-2-1' />Adjusting DepthPressureTransducer_Cor(m)
@@ -480,7 +480,7 @@ Warning: interpreting LongwaveRadiationDownWm2 as LongwaveRadiationDown(W/m2)
 |-|-|-|
 |2015-04-01 00:00:00+00:00|2015-06-20 00:00:00+00:00|LongwaveRadiationDown(W/m2)|
  
-![Erroneous data at NUK_K](figures/NUK_K_LongwaveRadiationDownWm2_data_flagging.png)
+![Erroneous data at NUK_K](figures/NUK_K_LongwaveRadiationDownWm2_data_removed.png)
  
 Warning: interpreting ShortwaveRadiationDownWm2 as ShortwaveRadiationDown(W/m2)
 |start time|end time|variable|
@@ -488,7 +488,7 @@ Warning: interpreting ShortwaveRadiationDownWm2 as ShortwaveRadiationDown(W/m2)
 |2015-01-25 11:00:00+00:00|2015-06-21 00:00:00+00:00|ShortwaveRadiationDown(W/m2)|
 |2017-01-15 16:00:00+00:00|2017-06-11 00:00:00+00:00|ShortwaveRadiationDown(W/m2)|
  
-![Erroneous data at NUK_K](figures/NUK_K_ShortwaveRadiationDownWm2_data_flagging.png)
+![Erroneous data at NUK_K](figures/NUK_K_ShortwaveRadiationDownWm2_data_removed.png)
  
 Warning: interpreting ShortwaveRadiationUpWm2 as ShortwaveRadiationUp(W/m2)
 |start time|end time|variable|
@@ -496,7 +496,7 @@ Warning: interpreting ShortwaveRadiationUpWm2 as ShortwaveRadiationUp(W/m2)
 |2015-01-25 11:00:00+00:00|2015-06-21 00:00:00+00:00|ShortwaveRadiationUp(W/m2)|
 |2017-01-15 16:00:00+00:00|2017-06-21 00:00:00+00:00|ShortwaveRadiationUp(W/m2)|
  
-![Erroneous data at NUK_K](figures/NUK_K_ShortwaveRadiationUpWm2_data_flagging.png)
+![Erroneous data at NUK_K](figures/NUK_K_ShortwaveRadiationUpWm2_data_removed.png)
  
 |start time|end time|variable|
 |-|-|-|
@@ -504,7 +504,7 @@ Warning: interpreting ShortwaveRadiationUpWm2 as ShortwaveRadiationUp(W/m2)
 |2015-07-11 02:00:00+00:00|2015-07-25 00:00:00+00:00|SurfaceHeight(m)|
 |2017-08-24 11:00:00+00:00|2017-09-19 00:00:00+00:00|SurfaceHeight(m)|
  
-![Erroneous data at NUK_K](figures/NUK_K_SurfaceHeightm_data_flagging.png)
+![Erroneous data at NUK_K](figures/NUK_K_SurfaceHeightm_data_removed.png)
  
 Warning: interpreting UpwardRadiationDownWm2 as LongwaveRadiationDown(W/m2)
 |start time|end time|variable|
@@ -512,14 +512,14 @@ Warning: interpreting UpwardRadiationDownWm2 as LongwaveRadiationDown(W/m2)
 |2015-03-25 00:00:00+00:00|2015-06-20 00:00:00+00:00|LongwaveRadiationDown(W/m2)|
 |2017-04-15 16:00:00+00:00|2017-05-11 00:00:00+00:00|LongwaveRadiationDown(W/m2)|
  
-![Erroneous data at NUK_K](figures/NUK_K_LongwaveRadiationDownWm2_data_flagging.png)
+![Erroneous data at NUK_K](figures/NUK_K_LongwaveRadiationDownWm2_data_removed.png)
  
 Warning: interpreting WindSpeed2ms as WindSpeed(m/s)
 |start time|end time|variable|
 |-|-|-|
 |2017-03-15 16:00:00+00:00|2017-05-11 00:00:00+00:00|WindSpeed(m/s)|
  
-![Erroneous data at NUK_K](figures/NUK_K_WindSpeedms_data_flagging.png)
+![Erroneous data at NUK_K](figures/NUK_K_WindSpeedms_data_removed.png)
  
 ## <a id='s9-2' />Adjusting data at NUK_K
 ### <a id='s9-2-1' />Adjusting DepthPressureTransducer_Cor(m)
@@ -599,7 +599,7 @@ Flagging data:
 |2014-02-09 00:00:00+00:00|2014-04-10 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
 |2016-09-21 00:00:00+00:00|2016-10-26 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
  
-![Erroneous data at NUK_U](figures/NUK_U_DepthPressureTransducer_Corm_data_flagging.png)
+![Erroneous data at NUK_U](figures/NUK_U_DepthPressureTransducer_Corm_data_removed.png)
  
 ## <a id='s11-2' />Adjusting data at NUK_U
 ### <a id='s11-2-1' />Adjusting DepthPressureTransducer_Cor(m)
@@ -638,7 +638,7 @@ Flagging data:
 |2013-06-09 00:00:00+00:00|2013-07-01 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
 |2019-05-20 00:00:00+00:00|2019-06-24 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
  
-![Erroneous data at QAS_L](figures/QAS_L_DepthPressureTransducer_Corm_data_flagging.png)
+![Erroneous data at QAS_L](figures/QAS_L_DepthPressureTransducer_Corm_data_removed.png)
  
 ## <a id='s12-2' />Adjusting data at QAS_L
 ### <a id='s12-2-1' />Adjusting DepthPressureTransducer_Cor(m)
@@ -694,7 +694,7 @@ Flagging data:
 |2017-11-11 00:00:00+00:00|2017-12-06 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
 |2018-08-30 00:00:00+00:00|2018-08-31 23:00:00+00:00|DepthPressureTransducer_Cor(m)|
  
-![Erroneous data at QAS_M](figures/QAS_M_DepthPressureTransducer_Corm_data_flagging.png)
+![Erroneous data at QAS_M](figures/QAS_M_DepthPressureTransducer_Corm_data_removed.png)
  
 |start time|end time|variable|
 |-|-|-|
@@ -702,7 +702,7 @@ Flagging data:
 |2018-12-30 00:00:00+00:00|2019-01-10 00:00:00+00:00|SurfaceHeight(m)|
 |2019-07-01 00:00:00+00:00|2019-12-06 00:00:00+00:00|SurfaceHeight(m)|
  
-![Erroneous data at QAS_M](figures/QAS_M_SurfaceHeightm_data_flagging.png)
+![Erroneous data at QAS_M](figures/QAS_M_SurfaceHeightm_data_removed.png)
  
 ## <a id='s13-2' />Adjusting data at QAS_M
 ### <a id='s13-2-1' />Adjusting DepthPressureTransducer_Cor(m)
@@ -733,7 +733,7 @@ Flagging data:
 |2010-10-19 00:00:00+00:00|2010-10-22 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
 |2016-08-10 00:00:00+00:00|2017-05-20 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
  
-![Erroneous data at QAS_U](figures/QAS_U_DepthPressureTransducer_Corm_data_flagging.png)
+![Erroneous data at QAS_U](figures/QAS_U_DepthPressureTransducer_Corm_data_removed.png)
  
 ## <a id='s14-2' />Adjusting data at QAS_U
 ### <a id='s14-2-1' />Adjusting DepthPressureTransducer_Cor(m)
@@ -768,14 +768,14 @@ Flagging data:
 |2018-09-15 00:00:00+00:00|2018-10-27 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
 |2019-04-30 00:00:00+00:00|2019-06-11 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
  
-![Erroneous data at SCO_L](figures/SCO_L_DepthPressureTransducer_Corm_data_flagging.png)
+![Erroneous data at SCO_L](figures/SCO_L_DepthPressureTransducer_Corm_data_removed.png)
  
 |start time|end time|variable|
 |-|-|-|
 |2013-08-11 00:00:00+00:00|2014-08-13 00:00:00+00:00|SurfaceHeight(m)|
 |2016-06-03 00:00:00+00:00|2016-09-22 00:00:00+00:00|SurfaceHeight(m)|
  
-![Erroneous data at SCO_L](figures/SCO_L_SurfaceHeightm_data_flagging.png)
+![Erroneous data at SCO_L](figures/SCO_L_SurfaceHeightm_data_removed.png)
  
 ## <a id='s15-2' />Adjusting data at SCO_L
 ### <a id='s15-2-1' />Adjusting DepthPressureTransducer_Cor(m)
@@ -808,13 +808,13 @@ Flagging data:
 |2009-10-27 00:00:00+00:00|2009-11-26 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
 |2011-09-07 00:00:00+00:00|2011-09-27 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
  
-![Erroneous data at SCO_U](figures/SCO_U_DepthPressureTransducer_Corm_data_flagging.png)
+![Erroneous data at SCO_U](figures/SCO_U_DepthPressureTransducer_Corm_data_removed.png)
  
 |start time|end time|variable|
 |-|-|-|
 |2008-06-07 00:00:00+00:00|2008-09-11 00:00:00+00:00|SnowHeight(m)|
  
-![Erroneous data at SCO_U](figures/SCO_U_SnowHeightm_data_flagging.png)
+![Erroneous data at SCO_U](figures/SCO_U_SnowHeightm_data_removed.png)
  
 |start time|end time|variable|
 |-|-|-|
@@ -822,7 +822,7 @@ Flagging data:
 |2014-06-29 00:00:00+00:00|2014-10-29 00:00:00+00:00|SurfaceHeight(m)|
 |2014-06-29 00:00:00+00:00|2014-10-29 00:00:00+00:00|SurfaceHeight(m)|
  
-![Erroneous data at SCO_U](figures/SCO_U_SurfaceHeightm_data_flagging.png)
+![Erroneous data at SCO_U](figures/SCO_U_SurfaceHeightm_data_removed.png)
  
 ## <a id='s16-2' />Adjusting data at SCO_U
 ### <a id='s16-2-1' />Adjusting DepthPressureTransducer_Cor(m)
@@ -852,14 +852,14 @@ Flagging data:
 |2017-10-07 00:00:00+00:00|2017-11-26 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
 |2017-11-24 00:00:00+00:00|2018-10-14 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
  
-![Erroneous data at TAS_A](figures/TAS_A_DepthPressureTransducer_Corm_data_flagging.png)
+![Erroneous data at TAS_A](figures/TAS_A_DepthPressureTransducer_Corm_data_removed.png)
  
 |start time|end time|variable|
 |-|-|-|
 |2007-10-07 00:00:00+00:00|2013-09-07 00:00:00+00:00|SnowHeight(m)|
 |2017-08-13 00:00:00+00:00|2018-09-01 15:00:00+00:00|SnowHeight(m)|
  
-![Erroneous data at TAS_A](figures/TAS_A_SnowHeightm_data_flagging.png)
+![Erroneous data at TAS_A](figures/TAS_A_SnowHeightm_data_removed.png)
  
 ## <a id='s17-2' />Adjusting data at TAS_A
 ### <a id='s17-2-1' />Adjusting DepthPressureTransducer_Cor(m)
@@ -892,7 +892,7 @@ Flagging data:
 |2016-11-12 00:00:00+00:00|2017-07-27 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
 |2015-09-01 00:00:00+00:00|2016-06-15 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
  
-![Erroneous data at TAS_L](figures/TAS_L_DepthPressureTransducer_Corm_data_flagging.png)
+![Erroneous data at TAS_L](figures/TAS_L_DepthPressureTransducer_Corm_data_removed.png)
  
 ## <a id='s18-2' />Adjusting data at TAS_L
 ### <a id='s18-2-1' />Adjusting DepthPressureTransducer_Cor(m)
@@ -936,14 +936,14 @@ Flagging data:
 |-|-|-|
 |2010-01-30 00:00:00+00:00|2010-09-05 00:00:00+00:00|SnowHeight(m)|
  
-![Erroneous data at THU_U](figures/THU_U_SnowHeightm_data_flagging.png)
+![Erroneous data at THU_U](figures/THU_U_SnowHeightm_data_removed.png)
  
 |start time|end time|variable|
 |-|-|-|
 |2012-08-16 00:00:00+00:00|2013-08-10 00:00:00+00:00|SurfaceHeight(m)|
 |2018-09-13 00:00:00+00:00|2019-05-13 00:00:00+00:00|SurfaceHeight(m)|
  
-![Erroneous data at THU_U](figures/THU_U_SurfaceHeightm_data_flagging.png)
+![Erroneous data at THU_U](figures/THU_U_SurfaceHeightm_data_removed.png)
  
 ## <a id='s20-2' />Adjusting data at THU_U
 ## <a id='s20-3' />Summarizing surface height at THU_U
@@ -961,13 +961,13 @@ Flagging data:
 |2013-02-23 00:00:00+00:00|2013-03-02 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
 |2015-09-07 00:00:00+00:00|2015-09-17 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
  
-![Erroneous data at UPE_L](figures/UPE_L_DepthPressureTransducer_Corm_data_flagging.png)
+![Erroneous data at UPE_L](figures/UPE_L_DepthPressureTransducer_Corm_data_removed.png)
  
 |start time|end time|variable|
 |-|-|-|
 |2016-09-07 00:00:00+00:00|2017-01-17 00:00:00+00:00|SurfaceHeight(m)|
  
-![Erroneous data at UPE_L](figures/UPE_L_SurfaceHeightm_data_flagging.png)
+![Erroneous data at UPE_L](figures/UPE_L_SurfaceHeightm_data_removed.png)
  
 ## <a id='s21-2' />Adjusting data at UPE_L
 ### <a id='s21-2-1' />Adjusting DepthPressureTransducer_Cor(m)
@@ -1004,14 +1004,14 @@ Flagging data:
 |2012-08-27 00:00:00+00:00|2012-11-06 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
 |2019-09-07 00:00:00+00:00|2019-09-17 00:00:00+00:00|DepthPressureTransducer_Cor(m)|
  
-![Erroneous data at UPE_U](figures/UPE_U_DepthPressureTransducer_Corm_data_flagging.png)
+![Erroneous data at UPE_U](figures/UPE_U_DepthPressureTransducer_Corm_data_removed.png)
  
 |start time|end time|variable|
 |-|-|-|
 |2011-06-02 00:00:00+00:00|2011-07-29 00:00:00+00:00|SurfaceHeight(m)|
 |2015-06-30 00:00:00+00:00|2015-08-13 00:00:00+00:00|SurfaceHeight(m)|
  
-![Erroneous data at UPE_U](figures/UPE_U_SurfaceHeightm_data_flagging.png)
+![Erroneous data at UPE_U](figures/UPE_U_SurfaceHeightm_data_removed.png)
  
 ## <a id='s22-2' />Adjusting data at UPE_U
 ### <a id='s22-2-1' />Adjusting DepthPressureTransducer_Cor(m)

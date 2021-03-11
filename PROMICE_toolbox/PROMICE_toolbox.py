@@ -145,7 +145,7 @@ def flag_data(df, site, var_list = ['all'], plot = True, remove_data = False):
             plt.title(site)
             fig.savefig('out/figures/'+site+'_'+var_save+'_data_removed.png',dpi=70)
             print(' ')
-            print('![Erroneous data at '+ site+'](figures/'+site+'_'+var_save+'_data_flagging.png)')
+            print('![Erroneous data at '+ site+'](figures/'+site+'_'+var_save+'_data_removed.png)')
             print(' ')
 
     return df_out
