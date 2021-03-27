@@ -8,10 +8,6 @@ GEUS (Geological Survey of Denmark and Greenland)
 
 Contributors: Adrien Wehrlé, Jason E. Box, B. Vandecrux
 
-"""
-# -*- coding: utf-8 -*-
-
-"""
 Tools:
     - smooth
     - hampel
