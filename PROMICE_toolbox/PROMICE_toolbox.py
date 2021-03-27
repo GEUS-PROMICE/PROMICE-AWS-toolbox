@@ -56,14 +56,30 @@ def load_promice(path_promice):
     df = pd.read_csv(path_promice,delim_whitespace=True)
     df['time'] = df.Year * np.nan
     
-    df['time'] = [datetime.datetime(y,m,d,h).replace(tzinfo=pytz.UTC) for y,m,d,h in zip(df['Year'].values,  df['MonthOfYear'].values, df['DayOfMonth'].values, df['HourOfDay(UTC)'].values)]
+    if 'hour' in promice_path:
+        df['time'] = [datetime.datetime(y,m,d,h).replace(tzinfo=pytz.UTC) 
+                      for y,m,d,h in zip(df['Year'].values,  
+                                         df['MonthOfYear'].values, 
+                                         df['DayOfMonth'].values, 
+                                         df['HourOfDay(UTC)'].values)]
+    
+    elif 'day' in promice_path:
+        df['time'] = [datetime.datetime(y,m,d).replace(tzinfo=pytz.UTC) 
+                      for y,m,d in zip(df['Year'].values,  
+                                       df['MonthOfYear'].values, 
+                                       df['DayOfMonth'].values)]
+    elif 'month' in promice_path:
+        df['time'] = [datetime.datetime(y,m).replace(tzinfo=pytz.UTC) 
+                      for y,m in zip(df['Year'].values,  
+                                     df['MonthOfYear'].values)]
+        
     df.set_index('time',inplace=True,drop=False)
         
     #set invalid values (-999) to nan 
-    df[df==-999.0]=np.nan
+    df[df==-999.0] = np.nan
     df['Albedo'] = df['ShortwaveRadiationUp(W/m2)'] / df['ShortwaveRadiationDown(W/m2)']
-    df.loc[df['Albedo']>1,'Albedo']=np.nan
-    df.loc[df['Albedo']<0,'Albedo']=np.nan
+    df.loc[df['Albedo']>1,'Albedo'] = np.nan
+    df.loc[df['Albedo']<0,'Albedo'] = np.nan
     df['SnowHeight(m)'] = 2.6 - df['HeightSensorBoom(m)']
     df['SurfaceHeight(m)'] = 1 - df['HeightStakes(m)']
 
