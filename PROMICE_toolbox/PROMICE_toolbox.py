@@ -52,19 +52,19 @@ def load_promice(path_promice):
     df = pd.read_csv(path_promice,delim_whitespace=True)
     df['time'] = df.Year * np.nan
     
-    if 'hour' in promice_path:
+    if 'hour' in path_promice:
         df['time'] = [datetime.datetime(y,m,d,h).replace(tzinfo=pytz.UTC) 
                       for y,m,d,h in zip(df['Year'].values,  
                                          df['MonthOfYear'].values, 
                                          df['DayOfMonth'].values, 
                                          df['HourOfDay(UTC)'].values)]
     
-    elif 'day' in promice_path:
+    elif 'day' in path_promice:
         df['time'] = [datetime.datetime(y,m,d).replace(tzinfo=pytz.UTC) 
                       for y,m,d in zip(df['Year'].values,  
                                        df['MonthOfYear'].values, 
                                        df['DayOfMonth'].values)]
-    elif 'month' in promice_path:
+    elif 'month' in path_promice:
         df['time'] = [datetime.datetime(y,m).replace(tzinfo=pytz.UTC) 
                       for y,m in zip(df['Year'].values,  
                                      df['MonthOfYear'].values)]
